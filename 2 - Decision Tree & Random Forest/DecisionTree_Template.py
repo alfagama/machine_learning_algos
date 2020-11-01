@@ -4,10 +4,6 @@
 # Complete the missing code by implementing the necessary commands.
 # For ANY questions/problems/help, email me: arislaza@csd.auth.gr
 # =============================================================================
-# =============================================================================
-# ARAMPATZIS GEORGIOS, AEM: 28
-# =============================================================================
-# =============================================================================
 
 
 
@@ -16,11 +12,11 @@
 # The below import is for using Graphviz!!! Make sure you install it in your
 # computer, after downloading it from here:
 # https://graphviz.gitlab.io/_pages/Download/Download_windows.html
-# After installation, change the 'C:/Program Files (x86)/Graphviz2.38/bin/' 
+# After installation, change the 'C:/Program Files (x86)/Graphviz2.38/bin/'
 # from below to the directory that you installed GraphViz (might be the same though).
 # =============================================================================
 import os
-os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz2.38/bin/'
+os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 
 
 
@@ -33,7 +29,7 @@ os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz2.38/bin/'
 
 
 # IMPORT NECESSARY LIBRARIES HERE
-from sklearn import tree, datasets, metrics, model_selection
+from sklearn import
 
 
 # =============================================================================
@@ -61,7 +57,7 @@ import graphviz
 
 
 # ADD COMMAND TO LOAD DATA HERE
-breastCancer = datasets.load_breast_cancer()
+breastCancer =
 
 
 # =============================================================================
@@ -85,7 +81,7 @@ y = breastCancer.target
 
 
 # ADD COMMAND TO CREATE DECISION TREE CLASSIFIER MODEL HERE
-model = tree.DecisionTreeClassifier(criterion='gini', max_depth=3)
+ model =
 
 
 # =============================================================================
@@ -104,7 +100,7 @@ x_train, x_test, y_train, y_test = model_selection.train_test_split(X, y)
 
 
 # ADD COMMAND TO TRAIN YOUR MODEL HERE
-model.fit(x_train, y_train)
+
 
 # =============================================================================
 
@@ -116,7 +112,7 @@ model.fit(x_train, y_train)
 
 
 # ADD COMMAND TO MAKE A PREDICTION HERE
-y_predicted = model.predict(x_test)
+y_predicted =
 
 
 # =============================================================================
@@ -143,7 +139,7 @@ print()
 
 
 # We always predict on the test dataset, which hasn't been used anywhere.
-# Try predicting using the train dataset this time and print the metrics 
+# Try predicting using the train dataset this time and print the metrics
 # to see how much you have overfitted the model
 # Hint: try increasing the max_depth parameter of the model
 y_predicted_train =
@@ -164,7 +160,7 @@ print()
 
 
 # ADD COMMAND TO EXPORT TRAINED MODEL HERE
-dot_data = 
+dot_data =
 
 
 # =============================================================================
@@ -174,5 +170,5 @@ dot_data =
 
 # The below command will export the graph into a PDF file located within the same folder as this script.
 # If you want to view it from the Python IDE, type 'graph' (without quotes) on the python console after the script has been executed.
-graph = graphviz.Source(dot_data) 
+graph = graphviz.Source(dot_data)
 graph.render("breastCancerTreePlot")

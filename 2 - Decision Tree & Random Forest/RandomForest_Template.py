@@ -4,10 +4,6 @@
 # Complete the missing code by implementing the necessary commands.
 # For ANY questions/problems/help, email me: arislaza@csd.auth.gr
 # =============================================================================
-# =============================================================================
-# ARAMPATZIS GEORGIOS, AEM: 28
-# =============================================================================
-# =============================================================================
 
 
 # From sklearn, we will import:
