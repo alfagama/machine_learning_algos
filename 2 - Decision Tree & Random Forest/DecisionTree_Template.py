@@ -20,7 +20,7 @@
 # from below to the directory that you installed GraphViz (might be the same though).
 # =============================================================================
 import os
-os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
+os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz2.38/bin/'
 
 
 
@@ -33,7 +33,7 @@ os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 
 
 # IMPORT NECESSARY LIBRARIES HERE
-from sklearn import
+from sklearn import tree, datasets, metrics, model_selection
 
 
 # =============================================================================
@@ -61,7 +61,7 @@ import graphviz
 
 
 # ADD COMMAND TO LOAD DATA HERE
-breastCancer =
+breastCancer = datasets.load_breast_cancer()
 
 
 # =============================================================================
@@ -85,7 +85,7 @@ y = breastCancer.target
 
 
 # ADD COMMAND TO CREATE DECISION TREE CLASSIFIER MODEL HERE
- model = 
+model = tree.DecisionTreeClassifier(criterion='gini', max_depth=3)
 
 
 # =============================================================================
@@ -104,7 +104,7 @@ x_train, x_test, y_train, y_test = model_selection.train_test_split(X, y)
 
 
 # ADD COMMAND TO TRAIN YOUR MODEL HERE
-
+model.fit(x_train, y_train)
 
 # =============================================================================
 
@@ -116,7 +116,7 @@ x_train, x_test, y_train, y_test = model_selection.train_test_split(X, y)
 
 
 # ADD COMMAND TO MAKE A PREDICTION HERE
-y_predicted = 
+y_predicted = model.predict(x_test)
 
 
 # =============================================================================
