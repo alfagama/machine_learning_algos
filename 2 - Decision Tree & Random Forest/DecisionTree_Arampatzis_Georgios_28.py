@@ -20,8 +20,7 @@
 # from below to the directory that you installed GraphViz (might be the same though).
 # =============================================================================
 import os
-os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz2.38/bin/'
-
+os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin/'
 
 # From sklearn, we will import:
 # 'datasets', for our data
@@ -29,15 +28,10 @@ os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz2.38/bin/'
 # 'tree' package, for creating the DecisionTreeClassifier and using graphviz
 # 'model_selection' package, which will help test our model.
 # =============================================================================
-
-
-# IMPORT NECESSARY LIBRARIES HERE
 from sklearn import tree, datasets, metrics, model_selection
 import matplotlib.pyplot as plt
 
 # =============================================================================
-
-
 # The 'graphviz' library is necessary to display the decision tree.
 # =============================================================================
 # !!! NOTE !!!
@@ -53,27 +47,16 @@ import matplotlib.pyplot as plt
 import graphviz
 import pydotplus
 
-
-
 # Load breastCancer data
 # =============================================================================
-
-
-# ADD COMMAND TO LOAD DATA HERE
 breastCancer = datasets.load_breast_cancer()
 
-
 # =============================================================================
-
-
-
 # Get samples from the data, and keep only the features that you wish.
 # Decision trees overfit easily from with a large number of features! Don't be greedy.
 numberOfFeatures = 10
 X = breastCancer.data[:, :numberOfFeatures]
 y = breastCancer.target
-
-
 
 # DecisionTreeClassifier() is the core of this script. You can customize its functionality
 # in various ways, but for now simply play with the 'criterion' and 'maxDepth' parameters.
@@ -81,50 +64,27 @@ y = breastCancer.target
 # 'max_depth': The maximum depth of the tree. A large depth can lead to overfitting, so start with a maxDepth of
 #              e.g. 3, and increase it slowly by evaluating the results each time.
 # =============================================================================
-
-
-# ADD COMMAND TO CREATE DECISION TREE CLASSIFIER MODEL HERE
 model = tree.DecisionTreeClassifier(
     criterion='gini',
     max_depth=3,
     random_state=1)
 
-
 # =============================================================================
-
-
-
 # The function below will split the dataset that we have into two subsets. We will use
 # the first subset for the training (fitting) phase, and the second for the evaluation phase.
 # By default, the train set is 75% of the whole dataset, while the test set makes up for the rest 25%.
 x_train, x_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.25, random_state=1)
 
-
-
 # Let's train our model.
 # =============================================================================
-
-
-# ADD COMMAND TO TRAIN YOUR MODEL HERE
 model.fit(x_train, y_train)
 
 # =============================================================================
-
-
-
-
 # Ok, now let's predict the output for the test input set
 # =============================================================================
-
-
-# ADD COMMAND TO MAKE A PREDICTION HERE
 y_predicted = model.predict(x_test)
 
-
 # =============================================================================
-
-
-
 # Time to measure scores. We will compare predicted output (from input of x_test)
 # with the true output (i.e. y_test).
 # You can call 'recall_score()', 'precision_score()', 'accuracy_score()', 'f1_score()' or any other available metric
@@ -135,9 +95,6 @@ y_predicted = model.predict(x_test)
 # print("Recall: %2f" % metrics.recall_score(y_test, y_predicted, average="macro"))
 # print("Precision: %2f" % metrics.precision_score(y_test, y_predicted, average="macro"))
 # print("F1: %2f" % metrics.f1_score(y_test, y_predicted, average="macro"))
-
-
-# ADD COMMANDS TO EVALUATE YOUR MODEL HERE (AND PRINT ON CONSOLE)
 print("Decision Tree - Model Evaluation: ")
 print("Recall: ", metrics.recall_score(y_test, y_predicted, average="macro"))
 print("Precision:", metrics.precision_score(y_test, y_predicted, average="macro"))
@@ -145,9 +102,6 @@ print("Accuracy: ", metrics.accuracy_score(y_test, y_predicted))
 print("F1: ", metrics.f1_score(y_test, y_predicted, average="macro"))
 
 # =============================================================================
-
-
-
 # We always predict on the test dataset, which hasn't been used anywhere.
 # Try predicting using the train dataset this time and print the metrics 
 # to see how much you have overfitted the model
@@ -161,18 +115,12 @@ print("Accuracy: ", metrics.accuracy_score(y_train, y_predicted_train))
 print("F1: ", metrics.f1_score(y_train, y_predicted_train, average="macro"))
 
 # =============================================================================
-
-
 # By using the 'export_graphviz' function from the 'tree' package we can visualize the trained model.
 # There is a variety of parameters to configure, which can lead to a quite visually pleasant result.
 # Make sure that you set the following parameters within the function:
 # feature_names = breastCancer.feature_names[:numberOfFeatures]
 # class_names = breastCancer.target_names
 # =============================================================================
-
-
-# ADD COMMAND TO EXPORT TRAINED MODEL HERE
-
 dot_data = tree.export_graphviz(
     decision_tree=model,
     feature_names=breastCancer.feature_names[:numberOfFeatures],
@@ -181,9 +129,38 @@ dot_data = tree.export_graphviz(
     leaves_parallel=True,
     impurity=True)
 
+# =============================================================================
+# The below command will export the graph into a PDF file located within the same folder as this script.
+# If you want to view it from the Python IDE, type 'graph' (without quotes) on the python console after the script has been executed.
+graph = graphviz.Source(dot_data)
+##########graph.render("breastCancerTreePlot") ################ ERRORS!!!!!!!!!!!!!!!!!
 
 # =============================================================================
-
+# Had issues with 'graph.render("breastCancerTreePlot")', was getting error:
+    # Format: "pdf" not recognized. Use one of:
+    # Traceback (most recent call last):
+    #   File "C:/.../DecisionTree_.py", line 137, in <module>
+    #     graph.render("breastCancerTreePlot")
+    #   File "C:\Users\...\AppData\Local\Programs\Python\Python38\lib\site-packages\graphviz\files.py", line 207, in render
+    #     rendered = backend.render(self._engine, format, filepath,
+    #   File "C:\Users\...\AppData\Local\Programs\Python\Python38\lib\site-packages\graphviz\backend.py", line 221, in render
+    #     run(cmd, capture_output=True, cwd=cwd, check=True, quiet=quiet)
+    #   File "C:\Users\...\AppData\Local\Programs\Python\Python38\lib\site-packages\graphviz\backend.py", line 183, in run
+    #     raise CalledProcessError(proc.returncode, cmd,
+    # graphviz.backend.CalledProcessError: Command '['dot', '-Tpdf', '-O', 'breastCancerTreePlot']' returned non-zero exit status 1. [stderr: b'Format: "pdf" not recognized. Use one of:\r\n']
+# Steps followed:
+# 1. Installed graphviz on Windows
+# 2. Added ..\bin to PATH
+# 3. Installed graphviz on python IDE (PyCharm) (pip install graphviz)
+# 4. Got the error! :)
+# I tried ' dot -version ' on cmd and it returned:
+    # C:\Users\...>dot -version
+    # dot - graphviz version 2.44.1 (20200629.0846)
+    # There is no layout engine support for "dot"
+    # Perhaps "dot -c" needs to be run (with installer's privileges) to register the plugins?
+# I suppose there was an installation error?
+# So... i used plot_tree()
+# =============================================================================
 plt.figure()
 tree.plot_tree(
     model,
@@ -195,21 +172,4 @@ tree.plot_tree(
 plt.savefig('DecisionTree_BreastCancerDS.png')
 plt.show()
 
-# The below command will export the graph into a PDF file located within the same folder as this script.
-# If you want to view it from the Python IDE, type 'graph' (without quotes) on the python console after the script has been executed.
-# graph = graphviz.Source(dot_data)
-# graph.render("breastCancerTreePlot")
-#graph.view()
-
-# with open("decision_tree.dot") as f:
-#     dot_graph = f.read()
-# graph = graphviz.Source(dot_graph)
-# graph.render(filename='decision_tree')
-
-
-
-
-# graph = graphviz.Source(dot_data)
-# graph.format = 'png'
-# graph.render('Decision_pdf')
-
+# =============================================================================
