@@ -20,7 +20,7 @@
 
 # IMPORT NECESSARY LIBRARIES HERE
 from sklearn import ensemble, datasets, metrics, model_selection
-
+import numpy as np
 
 # =============================================================================
 
@@ -143,6 +143,9 @@ print("F1: ", metrics.f1_score(y_test, y_predicted, average="macro"))
 # (one for each metric).
 # In essence, the same pipeline as previously will be followed.
 # =============================================================================
+
+n_estimators = [int(x) for x in np.linspace(start=1, stop=200, num=200)]
+
 
 # After finishing the above plots, try doing the same thing on the train data
 # Hint: you can plot on the same figure in order to add a second line.

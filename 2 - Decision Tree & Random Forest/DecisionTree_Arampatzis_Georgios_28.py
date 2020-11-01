@@ -23,7 +23,6 @@ import os
 os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz2.38/bin/'
 
 
-
 # From sklearn, we will import:
 # 'datasets', for our data
 # 'metrics' package, for measuring scores
@@ -34,7 +33,7 @@ os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz2.38/bin/'
 
 # IMPORT NECESSARY LIBRARIES HERE
 from sklearn import tree, datasets, metrics, model_selection
-
+import matplotlib.pyplot as plt
 
 # =============================================================================
 
@@ -139,7 +138,7 @@ y_predicted = model.predict(x_test)
 
 
 # ADD COMMANDS TO EVALUATE YOUR MODEL HERE (AND PRINT ON CONSOLE)
-print("Model Evaluation: ")
+print("Decision Tree - Model Evaluation: ")
 print("Recall: ", metrics.recall_score(y_test, y_predicted, average="macro"))
 print("Precision:", metrics.precision_score(y_test, y_predicted, average="macro"))
 print("Accuracy: ", metrics.accuracy_score(y_test, y_predicted))
@@ -184,15 +183,22 @@ dot_data = tree.export_graphviz(
 
 
 # =============================================================================
-# import matplotlib.pyplot as plt
-# plt.figure()
-# tree.plot_tree(model, filled=True)
-# plt.show()
+
+plt.figure()
+tree.plot_tree(
+    model,
+    feature_names=breastCancer.feature_names[:numberOfFeatures],
+    class_names=breastCancer.target_names,
+    filled=True,
+    impurity=True,
+    fontsize=5.5)
+plt.savefig('DecisionTree_BreastCancerDS.png')
+plt.show()
 
 # The below command will export the graph into a PDF file located within the same folder as this script.
 # If you want to view it from the Python IDE, type 'graph' (without quotes) on the python console after the script has been executed.
-graph = graphviz.Source(dot_data)
-graph.render("breastCancerTreePlot")
+# graph = graphviz.Source(dot_data)
+# graph.render("breastCancerTreePlot")
 #graph.view()
 
 # with open("decision_tree.dot") as f:
