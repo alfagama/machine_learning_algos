@@ -96,9 +96,9 @@ y_predicted = model.predict(x_test)
 # print("Precision: %2f" % metrics.precision_score(y_test, y_predicted, average="macro"))
 # print("F1: %2f" % metrics.f1_score(y_test, y_predicted, average="macro"))
 print("Decision Tree - Model Evaluation: ")
-print("Recall: ", metrics.recall_score(y_test, y_predicted, average="macro"))
-print("Precision:", metrics.precision_score(y_test, y_predicted, average="macro"))
 print("Accuracy: ", metrics.accuracy_score(y_test, y_predicted))
+print("Precision:", metrics.precision_score(y_test, y_predicted, average="macro"))
+print("Recall: ", metrics.recall_score(y_test, y_predicted, average="macro"))
 print("F1: ", metrics.f1_score(y_test, y_predicted, average="macro"))
 
 # =============================================================================
@@ -109,9 +109,9 @@ print("F1: ", metrics.f1_score(y_test, y_predicted, average="macro"))
 y_predicted_train = model.predict(x_train)
 print("")
 print("Prediction using train_set - Overfitting test!")
-print("Recall: ", metrics.recall_score(y_train, y_predicted_train, average="macro"))
-print("Precision:", metrics.precision_score(y_train, y_predicted_train, average="macro"))
 print("Accuracy: ", metrics.accuracy_score(y_train, y_predicted_train))
+print("Precision:", metrics.precision_score(y_train, y_predicted_train, average="macro"))
+print("Recall: ", metrics.recall_score(y_train, y_predicted_train, average="macro"))
 print("F1: ", metrics.f1_score(y_train, y_predicted_train, average="macro"))
 
 # =============================================================================
