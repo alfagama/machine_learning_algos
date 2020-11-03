@@ -143,7 +143,71 @@ print("F1: ", metrics.f1_score(y_test, y_predicted, average="macro"))
 # (one for each metric).
 # In essence, the same pipeline as previously will be followed.
 # =============================================================================
+n_estimators = 200
+# Create empty lists for all metrics + 1 for n_estimators
+num_of_trees = []
+recall = []
+precision = []
+accuracy = []
+f1score = []
 
+for i in range(1, n_estimators + 1):
+    # Creating models
+    forest = ensemble.RandomForestClassifier(
+        n_estimators=i,
+        criterion='gini',
+        max_depth=3,
+        #warm_start=True,
+        random_state=1)
+    # Training models
+    forest.fit(x_train, y_train)
+    # Prediction of models
+    y_pred = forest.predict(x_test)
+    # Filling lists with metrics + n_estimators
+    num_of_trees.append(i)
+    recall.append(metrics.recall_score(y_test, y_pred, average="macro"))
+    precision.append(metrics.precision_score(y_test, y_pred, average="macro"))
+    accuracy.append( metrics.accuracy_score(y_test, y_pred))
+    f1score.append(metrics.f1_score(y_test, y_pred, average="macro"))
+
+# plt.plot(num_of_trees, recall)
+# plt.show()
+fig, axs = plt.subplots(2, 2,
+                        gridspec_kw={'hspace': 0.5, 'wspace': 0.5})
+axs[0, 0].plot(num_of_trees, recall, 'tab:blue')
+axs[0, 0].set_title('Recall')
+axs[0, 1].plot(num_of_trees, precision, 'tab:orange')
+axs[0, 1].set_title('Precision')
+axs[1, 0].plot(num_of_trees, accuracy, 'tab:green')
+axs[1, 0].set_title('Accuracy')
+axs[1, 1].plot(num_of_trees, f1score, 'tab:red')
+axs[1, 1].set_title('F1 Score')
+
+for ax in axs.flat:
+    ax.set(xlabel='Number of Estimators', ylabel='Percentage (%)')
+
+# Hide x labels and tick labels for top plots and y ticks for right plots.
+# for ax in axs.flat:
+#     ax.label_outer()
+
+# # Save plot
+plt.savefig('RandomForest_Metrics_BreastCancerDB.png')
+
+# # Show plot
+plt.show()
+
+# After finishing the above plots, try doing the same thing on the train data
+# Hint: you can plot on the same figure in order to add a second line.
+# Change the line color to distinguish performance metrics on train/test data
+# In the end, you should have 4 figures (one for each metric)
+# And each figure should have 2 lines (one for train data and one for test data)
+
+
+
+# CREATE MODELS AND PLOTS HERE
+
+
+# =============================================================================
 # n_estimators = [int(x) for x in np.linspace(start=1, stop=200, num=200)]
 # tree = model_selection.GridSearchCV(
 #     model,
@@ -153,13 +217,6 @@ print("F1: ", metrics.f1_score(y_test, y_predicted, average="macro"))
 #     cv=3,
 #     scoring='neg_mean_absolute_error')
 # tree.fit(x_train, y_train)
-
-
-# After finishing the above plots, try doing the same thing on the train data
-# Hint: you can plot on the same figure in order to add a second line.
-# Change the line color to distinguish performance metrics on train/test data
-# In the end, you should have 4 figures (one for each metric)
-# And each figure should have 2 lines (one for train data and one for test data)
 
 # def plot_results(model, param='n_estimators', name='Num Trees'):
 #     param_name = 'param_%s' % param
@@ -192,8 +249,3 @@ print("F1: ", metrics.f1_score(y_test, y_predicted, average="macro"))
 #
 #
 # plot_results(tree)
-
-# CREATE MODELS AND PLOTS HERE
-
-
-# =============================================================================

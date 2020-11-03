@@ -1,0 +1,37 @@
+digraph Tree {
+node [shape=box, style="filled", color="black"] ;
+graph [ranksep=equally, splines=polyline] ;
+0 [label="mean concave points <= 0.049\ngini = 0.465\nsamples = 426\nvalue = [157, 269]\nclass = benign", fillcolor="#add6f4"] ;
+1 [label="mean radius <= 15.05\ngini = 0.089\nsamples = 258\nvalue = [12, 246]\nclass = benign", fillcolor="#43a2e6"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="mean concave points <= 0.031\ngini = 0.04\nsamples = 245\nvalue = [5, 240]\nclass = benign", fillcolor="#3d9fe6"] ;
+1 -> 2 ;
+3 [label="gini = 0.0\nsamples = 191\nvalue = [0, 191]\nclass = benign", fillcolor="#399de5"] ;
+2 -> 3 ;
+4 [label="gini = 0.168\nsamples = 54\nvalue = [5, 49]\nclass = benign", fillcolor="#4da7e8"] ;
+2 -> 4 ;
+5 [label="mean texture <= 18.835\ngini = 0.497\nsamples = 13\nvalue = [7, 6]\nclass = malignant", fillcolor="#fbede3"] ;
+1 -> 5 ;
+6 [label="gini = 0.245\nsamples = 7\nvalue = [1, 6]\nclass = benign", fillcolor="#5aade9"] ;
+5 -> 6 ;
+7 [label="gini = 0.0\nsamples = 6\nvalue = [6, 0]\nclass = malignant", fillcolor="#e58139"] ;
+5 -> 7 ;
+8 [label="mean texture <= 16.395\ngini = 0.236\nsamples = 168\nvalue = [145, 23]\nclass = malignant", fillcolor="#e99558"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label="mean concave points <= 0.091\ngini = 0.432\nsamples = 19\nvalue = [6, 13]\nclass = benign", fillcolor="#94caf1"] ;
+8 -> 9 ;
+10 [label="gini = 0.231\nsamples = 15\nvalue = [2, 13]\nclass = benign", fillcolor="#57ace9"] ;
+9 -> 10 ;
+11 [label="gini = 0.0\nsamples = 4\nvalue = [4, 0]\nclass = malignant", fillcolor="#e58139"] ;
+9 -> 11 ;
+12 [label="mean perimeter <= 88.25\ngini = 0.125\nsamples = 149\nvalue = [139, 10]\nclass = malignant", fillcolor="#e78a47"] ;
+8 -> 12 ;
+13 [label="gini = 0.497\nsamples = 13\nvalue = [7, 6]\nclass = malignant", fillcolor="#fbede3"] ;
+12 -> 13 ;
+14 [label="gini = 0.057\nsamples = 136\nvalue = [132, 4]\nclass = malignant", fillcolor="#e6853f"] ;
+12 -> 14 ;
+{rank=same ; 0} ;
+{rank=same ; 1; 8} ;
+{rank=same ; 2; 5; 9; 12} ;
+{rank=same ; 3; 4; 6; 7; 10; 11; 13; 14} ;
+}

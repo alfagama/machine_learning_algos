@@ -121,19 +121,24 @@ print("F1: ", metrics.f1_score(y_train, y_predicted_train, average="macro"))
 # feature_names = breastCancer.feature_names[:numberOfFeatures]
 # class_names = breastCancer.target_names
 # =============================================================================
-dot_data = tree.export_graphviz(
-    decision_tree=model,
-    feature_names=breastCancer.feature_names[:numberOfFeatures],
-    class_names=breastCancer.target_names,
-    filled=True,
-    leaves_parallel=True,
-    impurity=True)
+# dot_data = tree.export_graphviz(
+#     decision_tree=model,
+#     out_file='decisiontree.dot',
+#     feature_names=breastCancer.feature_names[:numberOfFeatures],
+#     class_names=breastCancer.target_names,
+#     filled=True,
+#     leaves_parallel=True,
+#     impurity=True)
 
 # =============================================================================
 # The below command will export the graph into a PDF file located within the same folder as this script.
 # If you want to view it from the Python IDE, type 'graph' (without quotes) on the python console after the script has been executed.
-graph = graphviz.Source(dot_data)
+#graph = graphviz.Source(dot_data)
 ##########graph.render("breastCancerTreePlot") ################ ERRORS!!!!!!!!!!!!!!!!!
+
+# with open('decisiontree.dot') as f:
+#     dot_graph = f.read()
+# display(graphviz.Source(dot_data))
 
 # =============================================================================
 # Had issues with 'graph.render("breastCancerTreePlot")', was getting error:
@@ -168,7 +173,7 @@ tree.plot_tree(
     class_names=breastCancer.target_names,
     filled=True,
     impurity=True,
-    fontsize=5.5)
+    fontsize=4)
 plt.savefig('DecisionTree_BreastCancerDS.png')
 plt.show()
 
