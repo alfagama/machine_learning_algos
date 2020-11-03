@@ -22,8 +22,8 @@
 from sklearn import ensemble, datasets, metrics, model_selection
 import numpy as np
 import matplotlib.pyplot as plt
-# =============================================================================
 
+# =============================================================================
 
 
 # Load breastCancer data
@@ -33,10 +33,7 @@ import matplotlib.pyplot as plt
 # ADD COMMAND TO LOAD DATA HERE
 breastCancer = datasets.load_breast_cancer()
 
-
-
 # =============================================================================
-
 
 
 # Get samples from the data, and keep only the features that you wish.
@@ -55,11 +52,6 @@ y = breastCancer.target
 # used whenever possible.
 x_train, x_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.25, random_state=1)
 
-
-
-
-
-
 # RandomForestClassifier() is the core of this script. You can call it from the 'ensemble' class.
 # You can customize its functionality in various ways, but for now simply play with the 'criterion' and 'maxDepth' parameters.
 # 'criterion': Can be either 'gini' (for the Gini impurity) and 'entropy' for the Information Gain.
@@ -72,19 +64,13 @@ x_train, x_test, y_train, y_test = model_selection.train_test_split(X, y, test_s
 
 # ADD COMMAND TO CREATE RANDOM FOREST CLASSIFIER MODEL HERE
 model = ensemble.RandomForestClassifier(
-  n_estimators=100,
-  criterion='gini',
-  max_depth=3,
-  random_state=1
- )
-
+    n_estimators=100,
+    criterion='gini',
+    max_depth=3,
+    random_state=1
+)
 
 # =============================================================================
-
-
-
-
-
 
 
 # Let's train our model.
@@ -97,8 +83,6 @@ model.fit(x_train, y_train)
 # =============================================================================
 
 
-
-
 # Ok, now let's predict the output for the test set
 # =============================================================================
 
@@ -106,9 +90,7 @@ model.fit(x_train, y_train)
 # ADD COMMAND TO MAKE A PREDICTION HERE
 y_predicted = model.predict(x_test)
 
-
 # =============================================================================
-
 
 
 # Time to measure scores. We will compare predicted output (from input of second subset, i.e. x_test)
@@ -124,7 +106,6 @@ y_predicted = model.predict(x_test)
 # =============================================================================
 
 
-
 # ADD COMMANDS TO EVALUATE YOUR MODEL HERE (AND PRINT ON CONSOLE)
 print("Random Forest - Model Evaluation: ")
 print("Recall: ", metrics.recall_score(y_test, y_predicted, average="macro"))
@@ -135,8 +116,7 @@ print("F1: ", metrics.f1_score(y_test, y_predicted, average="macro"))
 # =============================================================================
 
 
-
-# A Random Forest has been trained now, but let's train more models, 
+# A Random Forest has been trained now, but let's train more models,
 # with different number of estimators each, and plot performance in terms of
 # the difference metrics. In other words, we need to make 'n'(e.g. 200) models,
 # evaluate them on the aforementioned metrics, and plot 4 performance figures
@@ -157,7 +137,7 @@ for i in range(1, n_estimators + 1):
         n_estimators=i,
         criterion='gini',
         max_depth=3,
-        #warm_start=True,
+        # warm_start=True,
         random_state=1)
     # Training models
     forest.fit(x_train, y_train)
@@ -167,7 +147,7 @@ for i in range(1, n_estimators + 1):
     num_of_trees.append(i)
     recall.append(metrics.recall_score(y_test, y_pred, average="macro"))
     precision.append(metrics.precision_score(y_test, y_pred, average="macro"))
-    accuracy.append( metrics.accuracy_score(y_test, y_pred))
+    accuracy.append(metrics.accuracy_score(y_test, y_pred))
     f1score.append(metrics.f1_score(y_test, y_pred, average="macro"))
 
 # plt.plot(num_of_trees, recall)
@@ -194,7 +174,7 @@ for ax in axs.flat:
 plt.savefig('RandomForest_Metrics_BreastCancerDB.png')
 
 # # Show plot
-plt.show()
+#plt.show()
 
 # After finishing the above plots, try doing the same thing on the train data
 # Hint: you can plot on the same figure in order to add a second line.
@@ -203,49 +183,59 @@ plt.show()
 # And each figure should have 2 lines (one for train data and one for test data)
 
 
+overfit_num_of_trees = []
+overfit_recall = []
+overfit_precision = []
+overfit_accuracy = []
+overfit_f1score = []
 
-# CREATE MODELS AND PLOTS HERE
+for i in range(1, n_estimators + 1):
+    # Creating models
+    overfit_forest = ensemble.RandomForestClassifier(
+        n_estimators=i,
+        criterion='gini',
+        max_depth=3,
+        # warm_start=True,
+        random_state=1)
+    # Training models
+    overfit_forest.fit(x_train, y_train)
+    # Prediction of models
+    overfit_y_pred = overfit_forest.predict(x_train)
+    # Filling lists with metrics + n_estimators
+    overfit_num_of_trees.append(i)
+    overfit_recall.append(metrics.recall_score(y_train, overfit_y_pred, average="macro"))
+    overfit_precision.append(metrics.precision_score(y_train, overfit_y_pred, average="macro"))
+    overfit_accuracy.append(metrics.accuracy_score(y_train, overfit_y_pred))
+    overfit_f1score.append(metrics.f1_score(y_train, overfit_y_pred, average="macro"))
 
+
+fig2, axs2 = plt.subplots(2, 2,
+                        gridspec_kw={'hspace': 0.5, 'wspace': 0.5})
+
+axs2[0, 0].plot(num_of_trees, recall, 'tab:orange')
+axs2[0, 0].plot(overfit_num_of_trees, overfit_recall, label='train set')
+axs2[0, 0].set_title('Recall')
+axs2[0, 1].plot(num_of_trees, precision, 'tab:orange')
+axs2[0, 1].plot(overfit_num_of_trees, overfit_precision, label='train set')
+axs2[0, 1].set_title('Precision')
+axs2[1, 0].plot(num_of_trees, accuracy, 'tab:orange')
+axs2[1, 0].plot(overfit_num_of_trees, overfit_accuracy, label='train set')
+axs2[1, 0].set_title('Accuracy')
+axs2[1, 1].plot(num_of_trees, f1score, 'tab:orange')
+axs2[1, 1].plot(overfit_num_of_trees, overfit_f1score, label='train set')
+axs2[1, 1].set_title('F1 Score')
+
+for ax in axs2.flat:
+    ax.set(xlabel='Number of Estimators', ylabel='Percentage (%)')
+
+# Hide x labels and tick labels for top plots and y ticks for right plots.
+# for ax in axs.flat:
+#     ax.label_outer()
+
+# # Save plot
+plt.savefig('RandomForest_Metrics_Overfit_BreastCancerDB.png')
+
+# # Show plot
+plt.show()
 
 # =============================================================================
-# n_estimators = [int(x) for x in np.linspace(start=1, stop=200, num=200)]
-# tree = model_selection.GridSearchCV(
-#     model,
-#     param_grid=n_estimators,
-#     verbose=2,
-#     n_jobs=-1,
-#     cv=3,
-#     scoring='neg_mean_absolute_error')
-# tree.fit(x_train, y_train)
-
-# def plot_results(model, param='n_estimators', name='Num Trees'):
-#     param_name = 'param_%s' % param
-#
-#     # Extract information from the cross validation model
-#     train_scores = model.cv_results_['mean_train_score']
-#     test_scores = model.cv_results_['mean_test_score']
-#     train_time = model.cv_results_['mean_fit_time']
-#     param_values = list(model.cv_results_[param_name])
-#
-#     # Plot the scores over the parameter
-#     plt.subplots(1, 2, figsize=(10, 6))
-#     plt.subplot(121)
-#     plt.plot(param_values, train_scores, 'bo-', label='train')
-#     plt.plot(param_values, test_scores, 'go-', label='test')
-#     plt.ylim(ymin=-10, ymax=0)
-#     plt.legend()
-#     plt.xlabel(name)
-#     plt.ylabel('Neg Mean Absolute Error')
-#     plt.title('Score vs %s' % name)
-#
-#     plt.subplot(122)
-#     plt.plot(param_values, train_time, 'ro-')
-#     plt.ylim(ymin=0.0, ymax=2.0)
-#     plt.xlabel(name)
-#     plt.ylabel('Train Time (sec)')
-#     plt.title('Training Time vs %s' % name)
-#
-#     plt.tight_layout(pad=4)
-#
-#
-# plot_results(tree)
