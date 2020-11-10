@@ -25,16 +25,31 @@ wineData = Orange.data.Table('./wine.csv')
 # Define the learner that will be trained with the data.
 # Try two different learners: an '(Ordered) Learner' and an 'UnorderedLearner'.
 # =============================================================================
+#CN2
 # print("Rule ordering: Unordered, Evaluator: Laplace")
 # learner = Orange.classification.CN2UnorderedLearner()
 # learner.rule_finder.quality_evaluator = Orange.classification.rules.LaplaceAccuracyEvaluator()
+
 # print("Rule ordering: Ordered, Evaluator: Laplace")
 # learner = Orange.classification.CN2Learner()
 # learner.rule_finder.quality_evaluator = Orange.classification.rules.LaplaceAccuracyEvaluator()
+
 print("Rule ordering: Ordered, Evaluator: Entropy")
 learner = Orange.classification.CN2Learner()
 learner.rule_finder.quality_evaluator = Orange.classification.rules.EntropyEvaluator()
 
+#CN2SD
+# print("Rule ordering: Unordered, Evaluator: Laplace")
+# learner = Orange.classification.CN2SDUnorderedLearner()
+# learner.rule_finder.quality_evaluator = Orange.classification.rules.LaplaceAccuracyEvaluator()
+
+# print("Rule ordering: Ordered, Evaluator: Laplace")
+# learner = Orange.classification.CN2SDLearner()
+# learner.rule_finder.quality_evaluator = Orange.classification.rules.LaplaceAccuracyEvaluator()
+
+# print("Rule ordering: Ordered, Evaluator: Entropy")
+# learner = Orange.classification.CN2SDLearner()
+# learner.rule_finder.qual
 # =============================================================================
 # At this step we shall configure the parameters of our learner.
 # We can set the evaluator/heuristic ('Entropy', 'Laplace' or 'WRAcc'),
