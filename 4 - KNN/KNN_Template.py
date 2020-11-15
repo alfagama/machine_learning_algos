@@ -62,7 +62,6 @@ pd.set_option('display.max_columns', None)
 drop_columns = ["PassengerId", "Name", "Ticket", "Fare"]
 titanic = titanic.drop(drop_columns, axis=1)
 #   Change Cabin to binary 0/1 if Cabin = Nan then hasCabin = 0, else hasCabin = 1
-# titanic.rename(columns={'Cabin': 'hasCabin'}, inplace=True)
 titanic['hasCabin'] = 0
 titanic["Cabin"] = titanic["Cabin"].fillna(0)
 titanic["hasCabin"][titanic["Cabin"] != 0] = 1
@@ -121,7 +120,7 @@ titanic["Age"] = titanic["Age"].fillna(mean)
 # Male :  0
 # Female :  0
 
-# print(titanic.dtypes)
+#print(titanic.dtypes)
 # print(titanic.head(20))
 
 # =============================================================================
