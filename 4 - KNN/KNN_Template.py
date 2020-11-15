@@ -286,42 +286,22 @@ print(df_filled_NaN_cols)
 # Plot the F1 performance results for any combination οf parameter values of your choice.
 # If you want to do the hard task, also plot the F1 results with/without imputation (in the same figure)
 # =============================================================================
-# plt.title('k-Nearest Neighbors (Weights = '<?>', Metric = '<?>', p = <?>)')
-# plt.plot(f1_impute, label='with impute')
-# plt.plot(f1_no_impute, label='without impute')
-# plt.legend()
-# plt.xlabel('Number of neighbors')
-# plt.ylabel('F1')
-# plt.show()
-
-# fig, axs = plt.subplots(3, 2, sharex='col', sharey='row',
-#                         gridspec_kw={'hspace': 0, 'wspace': 0})
-
 fig, axs = plt.subplots(3, 2,
                         sharex=True, sharey=True,
                         gridspec_kw={'hspace': 0, 'wspace': 0})
 
 axs[0, 0].plot(num_of_neighbours, f1_score_u_1, 'tab:orange', label='with filled NaN')
 axs[0, 0].plot(num_of_neighbours, f1_score_u_1_no_nan, label='drop NaN cols')
-# axs[0, 0].set_title('Uniform, p=1')
 axs[0, 1].plot(num_of_neighbours, f1_score_d_1, 'tab:orange')
 axs[0, 1].plot(num_of_neighbours, f1_score_d_1_no_nan)
-# axs[0, 1].set_title('Distance, p=1')
 axs[1, 0].plot(num_of_neighbours, f1_score_u_2, 'tab:orange')
 axs[1, 0].plot(num_of_neighbours, f1_score_u_2_no_nan)
-# axs[1, 0].set_title('Uniform, p=2')
 axs[1, 1].plot(num_of_neighbours, f1_score_d_2, 'tab:orange')
 axs[1, 1].plot(num_of_neighbours, f1_score_d_2_no_nan)
-# axs[1, 1].set_title('Distance, p=2')
 axs[2, 0].plot(num_of_neighbours, f1_score_u_any, 'tab:orange')
 axs[2, 0].plot(num_of_neighbours, f1_score_u_any_no_nan)
-# axs[2, 0].set_title('Uniform, p=3')
 axs[2, 1].plot(num_of_neighbours, f1_score_d_any, 'tab:orange')
 axs[2, 1].plot(num_of_neighbours, f1_score_d_any_no_nan)
-# axs[2, 1].set_title('Distance, p=3')
-
-# for ax in axs.flat:
-#     ax.set(xlabel='k-NN number of neighbours', ylabel='F1 Score')
 
 fig.suptitle('X:NumOfNeighbours Y:F1 Score')
 
@@ -330,12 +310,6 @@ fig.text(0.7, 0.04, 'Distance', ha='center')
 fig.text(0.01, 0.75, 'p=1', va='center')
 fig.text(0.01, 0.5, 'p=2', va='center')
 fig.text(0.01, 0.25, 'p=3', va='center')
-# fig.text(0.04, 0.25, 'p=1', va='center', rotation='vertical')
-# fig.text(0.04, 0.5, 'p=2', va='center', rotation='vertical')
-# fig.text(0.04, 0.75, 'p=3', va='center', rotation='vertical')
-
-# fig.xlabel='k-NN number of neighbours'
-# fig.ylabel='F1 Score'
 
 fig.legend(shadow=True, fancybox=True, loc=1)
 
@@ -344,3 +318,4 @@ plt.savefig('k-NN F1Score - All Results.png')
 
 # # Show plot
 plt.show()
+# =============================================================================
