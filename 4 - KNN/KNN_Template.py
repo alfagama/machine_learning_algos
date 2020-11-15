@@ -53,7 +53,7 @@ titanic = pd.read_csv("titanic.csv",
                        )
 pd.set_option('display.max_columns', None)
 #   make sure that it got read OK
-print("Number of data: ", len(titanic))
+# print("Number of data: ", len(titanic))
 # print(titanic.head())
 #   check data stats
 # print(titanic.describe())
@@ -129,7 +129,7 @@ titanic["Age"] = titanic["Age"].fillna(mean)
 
 # print(titanic.dtypes)
 
-print(titanic.head(20))
+# print(titanic.head(20))
 
 
 
@@ -143,7 +143,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 #   Without empty columns
 drop_columns_with_empty_values = ["Age", "Embarked", "hasCabin"]
 titanic_no_nan = titanic.drop(drop_columns_with_empty_values, axis=1)
-print(titanic_no_nan.head(20))
+# print(titanic_no_nan.head(20))
 X_no_nan = titanic_no_nan.iloc[:, 1:len(titanic_no_nan)]
 y_no_nan = titanic_no_nan.iloc[:, 0]
 X_train_no_nan, X_test_no_nan, y_train_no_nan, y_test_no_nan = train_test_split(
@@ -157,12 +157,12 @@ X_train_no_nan, X_test_no_nan, y_train_no_nan, y_test_no_nan = train_test_split(
 scaler = MinMaxScaler()
 scaler.fit(X=X_train)
 scaled_features = pd.DataFrame(scaler.transform(X))
-print(scaled_features)
+# print(scaled_features)
 # _no_nan
 scaler_no_nan = MinMaxScaler()
 scaler_no_nan.fit(X=X_no_nan)
 scaled_features_no_nan = pd.DataFrame(scaler_no_nan.transform(X_no_nan))
-print(scaled_features_no_nan)
+# print(scaled_features_no_nan)
 
 # Do the following only if you want to do the hard task.
 #
@@ -200,6 +200,7 @@ f1_score_d_any_no_nan = []
 weighted = ["uniform", "distance"]
 p_list = [1, 2, "any"]
 
+print("Running k-NN:")
 for neighbours in range(1, n_neighbours + 1):
     for weight in weighted:
         for p_value in p_list:
@@ -271,25 +272,150 @@ for neighbours in range(1, n_neighbours + 1):
 # print(num_of_neighbours)
 
 
-print(max(enumerate(f1_score_u_2, 1), key=(lambda x: x[1])))
-print(max(enumerate(f1_score_d_2, 1), key=(lambda x: x[1])))
-print(max(enumerate(f1_score_u_1, 1), key=(lambda x: x[1])))
-print(max(enumerate(f1_score_d_1, 1), key=(lambda x: x[1])))
-print(max(enumerate(f1_score_u_any, 1), key=(lambda x: x[1])))
-print(max(enumerate(f1_score_d_any, 1), key=(lambda x: x[1])))
+# print(max(enumerate(f1_score_u_2, 1), key=(lambda x: x[1])))
+# print(max(enumerate(f1_score_d_2, 1), key=(lambda x: x[1])))
+# print(max(enumerate(f1_score_u_1, 1), key=(lambda x: x[1])))
+# print(max(enumerate(f1_score_d_1, 1), key=(lambda x: x[1])))
+# print(max(enumerate(f1_score_u_any, 1), key=(lambda x: x[1])))
+# print(max(enumerate(f1_score_d_any, 1), key=(lambda x: x[1])))
+# -----------------------------------------------------------------------------------------------
+df_final = pd.DataFrame(columns=['Parameters', 'Num_of_NN', 'Accuracy', 'Precision', 'Recall', 'F1 Score'])
+# -----------------------------------------------------------------------------------------------
+# print(max(enumerate(f1_score_u_2_no_nan, 1), key=(lambda x: x[1])))
+# print(max(enumerate(f1_score_d_any_no_nan, 1), key=(lambda x: x[1]))[0])
+knn_u_2_no_nan = KNeighborsClassifier(
+                    n_neighbors=max(enumerate(f1_score_u_2_no_nan, 1), key=(lambda x: x[1]))[0],
+                    weights='uniform',
+                    metric='minkowski',
+                    p=2
+                )
+knn_u_2_no_nan.fit(X_train_no_nan, y_train_no_nan)
+y_predicted_u_2_no_nan = knn_u_2_no_nan.predict(X_test_no_nan)
+df_final = df_final.append({'Parameters': 'uniform-minkowski-p=2',
+                'Num_of_NN': max(enumerate(f1_score_u_2_no_nan, 1), key=(lambda x: x[1]))[0],
+                'Accuracy': metrics.accuracy_score(y_test_no_nan, y_predicted_u_2_no_nan),
+                'Precision': metrics.precision_score(y_test_no_nan, y_predicted_u_2_no_nan, average="macro"),
+                'Recall': metrics.recall_score(y_test_no_nan, y_predicted_u_2_no_nan, average="macro"),
+                'F1 Score': metrics.f1_score(y_test_no_nan, y_predicted_u_2_no_nan, average="macro")
+}, ignore_index=True)
+# print("knn_u_2_no_nan: ")
+# print("Accuracy: ", metrics.accuracy_score(y_test_no_nan, y_predicted_u_2_no_nan))
+# print("Precision:", metrics.precision_score(y_test_no_nan, y_predicted_u_2_no_nan, average="macro"))
+# print("Recall: ", metrics.recall_score(y_test_no_nan, y_predicted_u_2_no_nan, average="macro"))
+# print("F1: ", metrics.f1_score(y_test_no_nan, y_predicted_u_2_no_nan, average="macro"))
+# -----------------------------------------------------------------------------------------------
+# print(max(enumerate(f1_score_d_2_no_nan, 1), key=(lambda x: x[1])))
+knn_d_2_no_nan = KNeighborsClassifier(
+                    n_neighbors=max(enumerate(f1_score_d_2_no_nan, 1), key=(lambda x: x[1]))[0],
+                    weights='distance',
+                    metric='minkowski',
+                    p=2
+                )
+knn_d_2_no_nan.fit(X_train_no_nan, y_train_no_nan)
+y_predicted_d_2_no_nan = knn_d_2_no_nan.predict(X_test_no_nan)
+df_final = df_final.append({'Parameters': 'distance-minkowski-p=2',
+                'Num_of_NN': max(enumerate(f1_score_d_2_no_nan, 1), key=(lambda x: x[1]))[0],
+                'Accuracy': metrics.accuracy_score(y_test_no_nan, y_predicted_d_2_no_nan),
+                'Precision': metrics.precision_score(y_test_no_nan, y_predicted_d_2_no_nan, average="macro"),
+                'Recall': metrics.recall_score(y_test_no_nan, y_predicted_d_2_no_nan, average="macro"),
+                'F1 Score': metrics.f1_score(y_test_no_nan, y_predicted_d_2_no_nan, average="macro")
+}, ignore_index=True)
+# print("knn_d_2_no_nan: ")
+# print("Accuracy: ", metrics.accuracy_score(y_test_no_nan, y_predicted_d_2_no_nan))
+# print("Precision:", metrics.precision_score(y_test_no_nan, y_predicted_d_2_no_nan, average="macro"))
+# print("Recall: ", metrics.recall_score(y_test_no_nan, y_predicted_d_2_no_nan, average="macro"))
+# print("F1: ", metrics.f1_score(y_test_no_nan, y_predicted_d_2_no_nan, average="macro"))
+# -----------------------------------------------------------------------------------------------
+# print(max(enumerate(f1_score_u_1_no_nan, 1), key=(lambda x: x[1])))
+knn_u_1_no_nan = KNeighborsClassifier(
+                    n_neighbors=max(enumerate(f1_score_u_1_no_nan, 1), key=(lambda x: x[1]))[0],
+                    weights='uniform',
+                    metric='minkowski',
+                    p=1
+                )
+knn_u_1_no_nan.fit(X_train_no_nan, y_train_no_nan)
+y_predicted_u_1_no_nan = knn_u_1_no_nan.predict(X_test_no_nan)
+df_final = df_final.append({'Parameters': 'uniform-minkowski-p=1',
+                'Num_of_NN': max(enumerate(f1_score_u_1_no_nan, 1), key=(lambda x: x[1]))[0],
+                'Accuracy': metrics.accuracy_score(y_test_no_nan, y_predicted_u_1_no_nan),
+                'Precision': metrics.precision_score(y_test_no_nan, y_predicted_u_1_no_nan, average="macro"),
+                'Recall': metrics.recall_score(y_test_no_nan, y_predicted_u_1_no_nan, average="macro"),
+                'F1 Score': metrics.f1_score(y_test_no_nan, y_predicted_u_1_no_nan, average="macro")
+}, ignore_index=True)
+# print("knn_u_1_no_nan: ")
+# print("Accuracy: ", metrics.accuracy_score(y_test_no_nan, y_predicted_u_1_no_nan))
+# print("Precision:", metrics.precision_score(y_test_no_nan, y_predicted_u_1_no_nan, average="macro"))
+# print("Recall: ", metrics.recall_score(y_test_no_nan, y_predicted_u_1_no_nan, average="macro"))
+# print("F1: ", metrics.f1_score(y_test_no_nan, y_predicted_u_1_no_nan, average="macro"))
+# -----------------------------------------------------------------------------------------------
+# print(max(enumerate(f1_score_d_1_no_nan, 1), key=(lambda x: x[1])))
+knn_d_1_no_nan = KNeighborsClassifier(
+                    n_neighbors=max(enumerate(f1_score_d_1_no_nan, 1), key=(lambda x: x[1]))[0],
+                    weights='distance',
+                    metric='minkowski',
+                    p=1
+                )
+knn_d_1_no_nan.fit(X_train_no_nan, y_train_no_nan)
+y_predicted_d_1_no_nan = knn_d_1_no_nan.predict(X_test_no_nan)
+df_final = df_final.append({'Parameters': 'distance-minkowski-p=1',
+                'Num_of_NN': max(enumerate(f1_score_d_1_no_nan, 1), key=(lambda x: x[1]))[0],
+                'Accuracy': metrics.accuracy_score(y_test_no_nan, y_predicted_d_1_no_nan),
+                'Precision': metrics.precision_score(y_test_no_nan, y_predicted_d_1_no_nan, average="macro"),
+                'Recall': metrics.recall_score(y_test_no_nan, y_predicted_d_1_no_nan, average="macro"),
+                'F1 Score': metrics.f1_score(y_test_no_nan, y_predicted_d_1_no_nan, average="macro")
+}, ignore_index=True)
+# print("knn_d_1_no_nan: ")
+# print("Accuracy: ", metrics.accuracy_score(y_test_no_nan, y_predicted_d_1_no_nan))
+# print("Precision:", metrics.precision_score(y_test_no_nan, y_predicted_d_1_no_nan, average="macro"))
+# print("Recall: ", metrics.recall_score(y_test_no_nan, y_predicted_d_1_no_nan, average="macro"))
+# print("F1: ", metrics.f1_score(y_test_no_nan, y_predicted_d_1_no_nan, average="macro"))
+# -----------------------------------------------------------------------------------------------
+# print(max(enumerate(f1_score_u_any_no_nan, 1), key=(lambda x: x[1])))
+knn_u_any_no_nan = KNeighborsClassifier(
+                    n_neighbors=max(enumerate(f1_score_u_any_no_nan, 1), key=(lambda x: x[1]))[0],
+                    weights='uniform',
+                    metric='minkowski'
+                )
+knn_u_any_no_nan.fit(X_train_no_nan, y_train_no_nan)
+y_predicted_u_any_no_nan = knn_u_any_no_nan.predict(X_test_no_nan)
+df_final = df_final.append({'Parameters': 'uniform-minkowski-p=any',
+                'Num_of_NN': max(enumerate(f1_score_u_any_no_nan, 1), key=(lambda x: x[1]))[0],
+                'Accuracy': metrics.accuracy_score(y_test_no_nan, y_predicted_u_any_no_nan),
+                'Precision': metrics.precision_score(y_test_no_nan, y_predicted_u_any_no_nan, average="macro"),
+                'Recall': metrics.recall_score(y_test_no_nan, y_predicted_u_any_no_nan, average="macro"),
+                'F1 Score': metrics.f1_score(y_test_no_nan, y_predicted_u_any_no_nan, average="macro")
+}, ignore_index=True)
+# print("knn_u_any_no_nan: ")
+# print("Accuracy: ", metrics.accuracy_score(y_test_no_nan, y_predicted_u_any_no_nan))
+# print("Precision:", metrics.precision_score(y_test_no_nan, y_predicted_u_any_no_nan, average="macro"))
+# print("Recall: ", metrics.recall_score(y_test_no_nan, y_predicted_u_any_no_nan, average="macro"))
+# print("F1: ", metrics.f1_score(y_test_no_nan, y_predicted_u_any_no_nan, average="macro"))
+# -----------------------------------------------------------------------------------------------
+# print(max(enumerate(f1_score_d_any_no_nan, 1), key=(lambda x: x[1])))
+knn_d_any_no_nan = KNeighborsClassifier(
+                    n_neighbors=max(enumerate(f1_score_d_any_no_nan, 1), key=(lambda x: x[1]))[0],
+                    weights='distance',
+                    metric='minkowski'
+                )
+knn_d_any_no_nan.fit(X_train_no_nan, y_train_no_nan)
+y_predicted_d_any_no_nan = knn_d_any_no_nan.predict(X_test_no_nan)
+df_final = df_final.append({'Parameters': 'distance-minkowski-p=any',
+                'Num_of_NN': max(enumerate(f1_score_d_any_no_nan, 1), key=(lambda x: x[1]))[0],
+                'Accuracy': metrics.accuracy_score(y_test_no_nan, y_predicted_d_any_no_nan),
+                'Precision': metrics.precision_score(y_test_no_nan, y_predicted_d_any_no_nan, average="macro"),
+                'Recall': metrics.recall_score(y_test_no_nan, y_predicted_d_any_no_nan, average="macro"),
+                'F1 Score': metrics.f1_score(y_test_no_nan, y_predicted_d_any_no_nan, average="macro")
+}, ignore_index=True)
+# print("knn_d_any_no_nan: ")
+# print("Accuracy: ", metrics.accuracy_score(y_test_no_nan, y_predicted_d_any_no_nan))
+# print("Precision:", metrics.precision_score(y_test_no_nan, y_predicted_d_any_no_nan, average="macro"))
+# print("Recall: ", metrics.recall_score(y_test_no_nan, y_predicted_d_any_no_nan, average="macro"))
+# print("F1: ", metrics.f1_score(y_test_no_nan, y_predicted_d_any_no_nan, average="macro"))
+# -----------------------------------------------------------------------------------------------
 
-print(max(enumerate(f1_score_u_2_no_nan, 1), key=(lambda x: x[1])))
-print(max(enumerate(f1_score_d_2_no_nan, 1), key=(lambda x: x[1])))
-print(max(enumerate(f1_score_u_1_no_nan, 1), key=(lambda x: x[1])))
-print(max(enumerate(f1_score_d_1_no_nan, 1), key=(lambda x: x[1])))
-print(max(enumerate(f1_score_u_any_no_nan, 1), key=(lambda x: x[1])))
-print(max(enumerate(f1_score_d_any_no_nan, 1), key=(lambda x: x[1])))
+print(df_final)
+#   Run again the best of each category with no_NaN values
 
-# print("Decision Tree - Model Evaluation: ")
-# print("Accuracy: ", metrics.accuracy_score(y_test, y_predicted))
-# print("Precision:", metrics.precision_score(y_test, y_predicted, average="macro"))
-# print("Recall: ", metrics.recall_score(y_test, y_predicted, average="macro"))
-# print("F1: ", metrics.f1_score(y_test, y_predicted, average="macro"))
 
 # Plot the F1 performance results for any combination οf parameter values of your choice.
 # If you want to do the hard task, also plot the F1 results with/without imputation (in the same figure)
@@ -336,10 +462,10 @@ fig.suptitle('X: F1 Score Y:num of neighbours, k-NN')
 # fig.xlabel='k-NN number of neighbours'
 # fig.ylabel='F1 Score'
 
-fig.legend(shadow=True, fancybox=True, loc='best')
+fig.legend(shadow=True, fancybox=True, loc=1)
 
 # # Save plot
-plt.savefig('k-NN F1 Scoreshgm09kl.png')
+plt.savefig('k-NN F1 Score - All results.png')
 
 # # Show plot
 plt.show()
