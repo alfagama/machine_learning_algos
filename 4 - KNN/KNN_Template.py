@@ -145,17 +145,14 @@ X_train_no_nan, X_test_no_nan, y_train_no_nan, y_test_no_nan = train_test_split(
 # Fit the scaler using only the train data
 # Transform both train and test data.
 # =============================================================================
-# scaler =
-scaler = MinMaxScaler()
-scaler.fit(X=X_train)
-scaled_features = pd.DataFrame(scaler.transform(X))
-# print(scaled_features)
+# with NaN filled out
+scaler = MinMaxScaler(copy=True, feature_range=(0, 1))
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
 # _no_nan
-scaler_no_nan = MinMaxScaler()
-scaler_no_nan.fit(X=X_no_nan)
-scaled_features_no_nan = pd.DataFrame(scaler_no_nan.transform(X_no_nan))
-# print(scaled_features_no_nan)
-
+scaler_no_nan = MinMaxScaler(copy=True, feature_range=(0, 1))
+X_train_no_nan = scaler.fit_transform(X_train_no_nan)
+X_test_no_nan = scaler.transform(X_test_no_nan)
 # =============================================================================
 # Do the following only if you want to do the hard task.
 #
