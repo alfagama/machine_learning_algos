@@ -1,14 +1,3 @@
-# =============================================================================
-# HOMEWORK 1 - Supervised learning
-# LINEAR REGRESSION ALGORITHM TEMPLATE
-# Complete the missing code by implementing the necessary commands.
-# For ANY questions/problems/help, email me: arislaza@csd.auth.gr
-# =============================================================================
-# =============================================================================
-# ARAMPATZIS GEORGIOS, AEM: 28
-# =============================================================================
-# =============================================================================
-
 # From 'sklearn' library, we need to import:
 # 'datasets', for loading our data
 # 'metrics', for measuring scores
