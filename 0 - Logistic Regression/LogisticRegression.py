@@ -1,11 +1,3 @@
-# =============================================================================
-# HOMEWORK 1 - Supervised learning
-# LOGISTIC REGRESSION ALGORITHM EXAMPLE
-# Complete the missing code by implementing the necessary commands.
-# For ANY questions/problems/help, email me: arislaza@csd.auth.gr
-# =============================================================================
-
-
 # STEP 1
 # From sklearn, we will import:
 # 'linear_model', which includes the LogisticRegression() method
