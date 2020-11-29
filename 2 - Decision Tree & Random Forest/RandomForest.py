@@ -1,15 +1,3 @@
-# =============================================================================
-# HOMEWORK 2 - DECISION TREES
-# RANDOM FOREST ALGORITHM TEMPLATE
-# Complete the missing code by implementing the necessary commands.
-# For ANY questions/problems/help, email me: arislaza@csd.auth.gr
-# =============================================================================
-# =============================================================================
-# ARAMPATZIS GEORGIOS, AEM: 28
-# =============================================================================
-# =============================================================================
-
-
 # From sklearn, we will import:
 # 'datasets', for our data
 # 'metrics' package, for measuring scores

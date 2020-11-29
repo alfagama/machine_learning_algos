@@ -1,16 +1,3 @@
-# =============================================================================
-# HOMEWORK 2 - DECISION TREES
-# DECISION TREE ALGORITHM TEMPLATE
-# Complete the missing code by implementing the necessary commands.
-# For ANY questions/problems/help, email me: arislaza@csd.auth.gr
-# =============================================================================
-# =============================================================================
-# ARAMPATZIS GEORGIOS, AEM: 28
-# =============================================================================
-# =============================================================================
-
-
-
 #=============================================================================
 # !!! NOTE !!!
 # The below import is for using Graphviz!!! Make sure you install it in your

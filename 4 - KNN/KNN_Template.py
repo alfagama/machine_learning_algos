@@ -1,16 +1,4 @@
 # =============================================================================
-# HOMEWORK 4 - INSTANCE-BASED LEARNING
-# K-NEAREST NEIGHBORS TEMPLATE
-# Complete the missing code by implementing the necessary commands.
-# For ANY questions/problems/help, email us: arislaza@csd.auth.gr, ipierros@csd.auth.gr
-# =============================================================================
-# =============================================================================
-# ARAMPATZIS GEORGIOS, AEM: 28
-# =============================================================================
-# =============================================================================
-
-
-# =============================================================================
 # import the KNeighborsClassifier
 # if you want to do the hard task, also import the KNNImputer
 import numpy as np

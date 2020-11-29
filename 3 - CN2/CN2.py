@@ -1,15 +1,3 @@
-# =============================================================================
-# HOMEWORK 3 - RULE-BASED LEARNING
-# CN2 ALGORITHM TEMPLATE
-# Complete the missing code by implementing the necessary commands.
-# For ANY questions/problems/help, email me: arislaza@csd.auth.gr
-# =============================================================================
-# =============================================================================
-# ARAMPATZIS GEORGIOS, AEM: 28
-# =============================================================================
-# ==============================================================================
-
-
 # For this project, the only thing that we will need to import is the "Orange" library.
 # However, before importing it, you must first install the library into Python.
 # Read the instructions on how to do that (it might be a bit trickier than usual!)
