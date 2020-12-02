@@ -14,9 +14,9 @@ for train, test in loocv.split(X):
     y_train, y_test = y[train], y[test]
     rfc = RandomForestClassifier(random_state=1)
     rfc.fit(X_train, y_train)
-    y_hat = rfc.predict(X_test)
+    y_ = rfc.predict(X_test)
     y_true.append(y_test[0])
-    y_pred.append(y_hat[0])
+    y_pred.append(y_[0])
 
 acc = accuracy_score(y_true, y_pred)
 print('Accuracy: %.3f' % acc)
