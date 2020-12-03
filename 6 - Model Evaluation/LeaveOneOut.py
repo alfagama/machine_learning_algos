@@ -40,6 +40,11 @@ print("Evaluation for 3 classes")
 print("Confusion Matrix:")
 print(cnf_matrix)
 print("One-of / Multinomial classification")
+print("-----------")
+print("| TP | FP |")
+print("-----------")
+print("| FN | TN |")
+print("-----------")
 
 # =============================================================================
 # Method fill_matrix()
