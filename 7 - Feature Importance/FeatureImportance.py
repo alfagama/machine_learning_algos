@@ -5,10 +5,7 @@ from sklearn import metrics
 
 htru2 = pd.read_csv("HTRU_2.csv",
                       sep=',',
-                      header=None,  # no header, alternative header = header_col
-                      # index_col=None,  # no index, alternative header = index_row
-                      # skiprows=0  # how many rows to skip / not include in read_csv
-                      )
+                      header=None)
 pd.set_option('display.max_columns', None)
 
 print(htru2.head(5))
@@ -47,3 +44,4 @@ print("Accuracy: ", metrics.accuracy_score(y_test, y_predicted))
 print("Precision:", metrics.precision_score(y_test, y_predicted, average="macro"))
 print("Recall: ", metrics.recall_score(y_test, y_predicted, average="macro"))
 print("F1: ", metrics.f1_score(y_test, y_predicted, average="macro"))
+print("AUC: ", metrics.auc(y_test, y_predicted))
