@@ -10,7 +10,7 @@ from skrobot.tasks import EvaluationCrossValidationTask
 from skrobot.tasks import HyperParametersSearchCrossValidationTask
 from skrobot.feature_selection import ColumnSelector
 
-######### Initialization Code
+######## Initialization Code
 
 train_data_set_file_path = 'https://bit.ly/sms-spam-ham-data-train'
 

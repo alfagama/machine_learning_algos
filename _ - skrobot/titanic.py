@@ -13,7 +13,7 @@ from skrobot.tasks import HyperParametersSearchCrossValidationTask
 from skrobot.feature_selection import ColumnSelector
 from skrobot.notification import BaseNotifier
 
-######### Initialization Code
+######## Initialization Code
 
 train_data_set_file_path = 'https://bit.ly/titanic-data-train'
 
