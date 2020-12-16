@@ -2,11 +2,10 @@
 # import stuff!
 # =============================================================================
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler
 from sklearn import metrics
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.inspection import permutation_importance
@@ -112,10 +111,10 @@ def metrics_call(pred,name):
     plt.close()
 
 print("Random Forest - Model Evaluation: ")
-metrics_call(y_predicted, 'without PCA')
+metrics_call(y_predicted, ' without PCA')
 print("")
 print("Random Forest - Model Evaluation - After PCA: ")
-metrics_call(y_predicted_pca, 'with PCA')
+metrics_call(y_predicted_pca, ' with PCA')
 
 # =============================================================================
 # feature importance : method 1: Random Forest Built-in Feature Importance
@@ -189,4 +188,4 @@ model_with_4_features.fit(X_train2, y_train2)
 y_predicted3 = model_with_4_features.predict(X_test2)
 print("")
 print("Random Forest - Model Evaluation - 4 best features: ")
-metrics_call(y_predicted3, 'with 4 features')
+metrics_call(y_predicted3, ' with 4 features')
