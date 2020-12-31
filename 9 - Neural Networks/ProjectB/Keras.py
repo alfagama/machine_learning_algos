@@ -23,6 +23,7 @@ resnet_model = resnet50.ResNet50(weights='imagenet')
 mobilenet_model = mobilenet.MobileNet(weights='imagenet')
 
 models = [vgg_model, inception_model, resnet_model, mobilenet_model]
+models_names = ['vgg_model', 'inception_model', 'resnet_model', 'mobilenet_model']
 
 # =============================================================================
 # Predict Method
@@ -39,7 +40,7 @@ def predict_bread(filenames):
         processed_images.append(processed_image)
 
     for model in models:
-        print("new model")
+        print("using model: ", model.name)
         predictions = model.predict(processed_images)
         label_vgg = decode_predictions(predictions)
 
