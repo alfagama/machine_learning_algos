@@ -23,14 +23,13 @@ resnet_model = resnet50.ResNet50(weights='imagenet')
 mobilenet_model = mobilenet.MobileNet(weights='imagenet')
 
 models = [vgg_model, inception_model, resnet_model, mobilenet_model]
-models_names = ['vgg_model', 'inception_model', 'resnet_model', 'mobilenet_model']
 
 # =============================================================================
 # Predict Method
 # =============================================================================
 
 
-def predict_bread(filenames):
+def predict_breed(filenames):
     processed_images = []
     for filename in filenames:
         original = load_img(filename, target_size=(224, 224))
@@ -59,8 +58,8 @@ fred = ['Fred/Fred1.jpg', 'Fred/Fred2.jpg', 'Fred/Fred3.jpg']
 # Calling Method
 # =============================================================================
 print("\nJake predictions: ")
-predict_bread(jake)
+predict_breed(jake)
 print("\nErmis predictions: ")
-predict_bread(ermis)
+predict_breed(ermis)
 print("\nFred predictions: ")
-predict_bread(fred)
+predict_breed(fred)
