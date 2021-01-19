@@ -22,3 +22,9 @@ print('pandas: {}'.format(pandas.__version__))
 import sklearn
 
 print('sklearn: {}'.format(sklearn.__version__))
+
+import keras
+print(keras.__version__)
+
+import tensorflow
+print(tensorflow.__version__)
