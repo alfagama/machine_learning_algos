@@ -60,7 +60,7 @@ DecisionTrees = DecisionTreeClassifier(
 )
 estimators.append(DecisionTrees)
 
-# Decision Tree ---------------------------------------------------------------
+# ---------- Random Forest ----------------------------------------------------
 RandomForest = RandomForestClassifier(
     n_estimators=200,
     criterion='gini',
@@ -68,7 +68,7 @@ RandomForest = RandomForestClassifier(
 )
 estimators.append(RandomForest)
 
-# KNN -------------------------------------------------------------------------
+# ---------- KNN --------------------------------------------------------------
 KNN = KNeighborsClassifier(
     n_neighbors=int(math.sqrt(len(y_train))),
     weights='uniform',
