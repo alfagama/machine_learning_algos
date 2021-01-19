@@ -78,7 +78,7 @@ KNN = KNeighborsClassifier(
 estimators.append(KNN)
 
 # =============================================================================
-#
+# Compute BaggingClassifier for all estimators
 # =============================================================================
 results = []
 for estimator in estimators:
@@ -92,7 +92,7 @@ for estimator in estimators:
     model = model.fit(x_train, y_train)
     ytest_pred = model.predict(x_test)
 
-    print("Model Evaluation: ", estimator)
+    print(estimator)
     acc = metrics.accuracy_score(y_test, ytest_pred)
     pre = metrics.precision_score(y_test, ytest_pred, average="macro")
     rec = metrics.recall_score(y_test, ytest_pred, average="macro")
@@ -105,13 +105,12 @@ for estimator in estimators:
 # =============================================================================
 # Find winner
 # =============================================================================
-s, x, o = 0, -1, 0
-for i in results:
-    print(i[3])
-    x += 1
-    if i[3] > s:
-        s = i[3]
-        o = x
+compare_position, current_position, best_position = -1, -1, -1
+for result in results:
+    current_position += 1
+    if result[3] > compare_position:
+        compare_position = result[3]
+        best_position = current_position
 
 # =============================================================================
 # Prepare X vs Y
@@ -119,7 +118,7 @@ for i in results:
 names = ['Bagging Classifier->LR', 'Bagging Classifier->GNB',
          'Bagging Classifier->DT', 'Bagging Classifier->RF', 'Bagging Classifier->KNN']
 labels = ['Accuracy', 'Precision', 'Recall', 'F1']
-hihgest_ensemble = [round(elem, 2) for elem in results[o]]
+hihgest_ensemble = [round(elem, 2) for elem in results[best_position]]
 old_random_forest = [0.9300699300699301, 0.9289308176100629, 0.9227272727272727, 0.9256138160632543]
 old_random_forest = [round(elem, 2) for elem in old_random_forest]
 
@@ -131,7 +130,7 @@ x = np.arange(len(labels))  # the label locations
 width = 0.35  # the width of the bars
 
 fig, ax = plt.subplots()
-rects1 = ax.bar(x - width/2, hihgest_ensemble, width, color='Blue', label=names[o])
+rects1 = ax.bar(x - width/2, hihgest_ensemble, width, color='Blue', label=names[best_position])
 rects2 = ax.bar(x + width/2, old_random_forest, width, color='Pink', label='Random Forest')
 
 # Add some text for labels, title and custom x-axis tick labels, etc.
