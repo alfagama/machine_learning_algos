@@ -1,6 +1,6 @@
 from sklearn import datasets
-from sklearn.cluster import KMeans, SpectralClustering, DBSCAN
-from sklearn.metrics import silhouette_samples, silhouette_score
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
 from yellowbrick.cluster import SilhouetteVisualizer
 import matplotlib.pyplot as plt
 #
