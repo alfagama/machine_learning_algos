@@ -22,10 +22,10 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, explained_v
 #   #   In this case we dropped all y = 0, but still!..
 # =============================================================================
 
+# =============================================================================
+#  MLPRegressor
+# =============================================================================
 def mlp_reg(X_train, X_test, Y_train, Y_test):
-    # =============================================================================
-    #  MLPRegressor
-    # =============================================================================
     hidden_layer_sizes = [
         # [100, 100, 100],
         [200, 200, 200],
@@ -77,10 +77,10 @@ def mlp_reg(X_train, X_test, Y_train, Y_test):
                         print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
 
+# =============================================================================
+#  LinearRegression
+# =============================================================================
 def lin_reg(X_train, X_test, Y_train, Y_test):
-    # =============================================================================
-    #  LinearRegression
-    # =============================================================================
     lr = LinearRegression(fit_intercept=True,
                           normalize=False,
                           copy_X=True,
@@ -99,11 +99,11 @@ def lin_reg(X_train, X_test, Y_train, Y_test):
     print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
 
+# =============================================================================
+#  DecisionTreeRegressor
+# =============================================================================
 def dt_reg(X_train, X_test, Y_train, Y_test):
-    # =============================================================================
-    #  DecisionTreeRegressor
-    # =============================================================================
-    criterions = ['mse', 'friedman_mse'] # mae->takes a lot more time and results worse than the others!
+    criterions = ['mse', 'friedman_mse']  # mae->takes a lot more time and results worse than the others!
     splitters = ['best', 'random']
     max_depths = [None, 20, 50]
     min_sam_splits = [2, 5, 10]
@@ -144,10 +144,10 @@ def dt_reg(X_train, X_test, Y_train, Y_test):
                                   r2s, "variance_score: ", v_s)
 
 
+# =============================================================================
+#  PLSRegression
+# =============================================================================
 def pls_reg(X_train, X_test, Y_train, Y_test):
-    # =============================================================================
-    #  PLSRegression
-    # =============================================================================
     n_comps = [2, 5, 20, 30]
     # algorithm = ['nipals', 'svd',
     #              'nipals', 'svd',
@@ -176,10 +176,10 @@ def pls_reg(X_train, X_test, Y_train, Y_test):
             print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
 
+# =============================================================================
+#  KNeighborsRegressor
+# =============================================================================
 def knn_reg(X_train, X_test, Y_train, Y_test):
-    # =============================================================================
-    #  KNeighborsRegressor
-    # =============================================================================
     neighbours = [3]
     weights = ['uniform', 'distance']
     algorithms = ['auto', 'ball_tree', 'kd_tree', 'brute']
@@ -213,10 +213,10 @@ def knn_reg(X_train, X_test, Y_train, Y_test):
                         print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
 
+# =============================================================================
+#  SGDRegressor
+# =============================================================================
 def sgd_reg(X_train, X_test, Y_train, Y_test):
-    # =============================================================================
-    #  SGDRegressor
-    # =============================================================================
     losses = ['squared_loss', 'huber', 'epsilon_insensitive', 'squared_epsilon_insensitive']
     penalties = ['l1', 'l2']
     max_iters = [1000, 2000]
@@ -257,10 +257,10 @@ def sgd_reg(X_train, X_test, Y_train, Y_test):
                 print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
 
+# =============================================================================
+#  SVR
+# =============================================================================
 def svr(X_train, X_test, Y_train, Y_test):
-    # =============================================================================
-    #  SVR
-    # =============================================================================
     kernels = ['poly', 'rbf', 'sigmoid']
     gammas = ['scale', 'auto']
     degrees = [2, 3, 4, 5]
@@ -295,15 +295,15 @@ def svr(X_train, X_test, Y_train, Y_test):
                     print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
 
+# =============================================================================
+#  NuSVR
+# =============================================================================
 def nu_svr(X_train, X_test, Y_train, Y_test):
-    # =============================================================================
-    #  NuSVR
-    # =============================================================================
-    nu_vals = [0.1, 0.5, 1.0]
-    nu_kernels = ['poly', 'rbf', 'sigmoid']
-    nu_gammas = ['scale', 'auto']
-    nu_degrees = [2, 3, 4, 5]
-    nu_c_vals = [0.1, 1, 10, 100]
+    nu_vals = [0.5, 1.0, 0.1]
+    nu_kernels = ['rbf', 'poly', ]  # 'sigmoid' -> error skyrockets!
+    nu_gammas = ['scale']  # ['auto', 'scale'] -> makes no difference
+    nu_degrees = [3]  # [2, 3, 4, 5]-> makes no difference
+    nu_c_vals = [100]  # 0.1, 1, 10, -> error skyrockets!
 
     for nu in nu_vals:
         for nu_kernel in nu_kernels:
@@ -335,15 +335,15 @@ def nu_svr(X_train, X_test, Y_train, Y_test):
                         print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
 
+# =============================================================================
+#  Methods
+# =============================================================================
 def results(X_train, X_test, Y_train, Y_test):
-    # =============================================================================
-    #  Methods
-    # =============================================================================
-    mlp_reg(X_train, X_test, Y_train, Y_test)
-    lin_reg(X_train, X_test, Y_train, Y_test)
+    # mlp_reg(X_train, X_test, Y_train, Y_test)
+    # lin_reg(X_train, X_test, Y_train, Y_test)
     dt_reg(X_train, X_test, Y_train, Y_test)
-    pls_reg(X_train, X_test, Y_train, Y_test)
-    knn_reg(X_train, X_test, Y_train, Y_test)
-    sgd_reg(X_train, X_test, Y_train, Y_test)
-    svr(X_train, X_test, Y_train, Y_test)
-    nu_svr(X_train, X_test, Y_train, Y_test)
+    # pls_reg(X_train, X_test, Y_train, Y_test)
+    # knn_reg(X_train, X_test, Y_train, Y_test)
+    # sgd_reg(X_train, X_test, Y_train, Y_test)
+    # svr(X_train, X_test, Y_train, Y_test)
+    # nu_svr(X_train, X_test, Y_train, Y_test)
