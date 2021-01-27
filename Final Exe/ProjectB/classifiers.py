@@ -4,37 +4,36 @@
 from sklearn.neural_network import MLPRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.cross_decomposition import PLSRegression
-# from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.linear_model import SGDRegressor
 from sklearn.svm import SVR, NuSVR
-from sklearn.metrics import mean_absolute_error, mean_squared_error, explained_variance_score, r2_score
-###############
-# As noted (for example, in Wikipedia), MAPE can be problematic. Most pointedly, it can cause division-by-zero errors.
-###############
+from sklearn.metrics import mean_absolute_error, mean_squared_error, explained_variance_score, r2_score  # As noted
+# MAPE can be problematic. Most pointedly, it can cause division-by-zero errors.
 
 
-def results(X_train, X_test, Y_train, Y_test):
-    # =============================================================================
-    #  Classifiers
-    # =============================================================================
-    #   The concept here is:
-    #   1.  Lists with model parameters
-    #   2.  Run for all possible combination
-    #   3.  Print results for MAE, MSE, RMSE, R2_Score, Variance_Score
+# =============================================================================
+#  Classifiers
+# =============================================================================
+#   The concept here is:
+#   1.  Lists with model parameters
+#   2.  Run for all possible combination
+#   3.  Print results for MAE, MSE, RMSE, R2_Score, Variance_Score
+# =============================================================================
+
+def mlp_reg(X_train, X_test, Y_train, Y_test):
     # =============================================================================
     #  MLPRegressor
     # =============================================================================
     hidden_layer_sizes = [
-                            # [100, 100, 100],
-                            [200, 200, 200],
-                            [100, 200, 200, 50],
-                            [200, 200, 200, 200]]
-    activation = ['relu']        # -'tanh'
-    solvers = ['adam', 'lbfgs']  # -'sgd'
-    tols = [0.0001, 0.00001]
-    max_iters = [200, 300, 400]
+        # [100, 100, 100],
+        [200, 200, 200],
+        [100, 200, 200, 50],
+        [200, 200, 200, 200]]
+    activation = ['relu']  # -'tanh'->bad results
+    solvers = ['adam', 'lbfgs']  # -'sgd'->bad results, -'lbfgs'->kind of bad
+    tols = [0.0001, 0.00001]  # 0.0001 -> worse than 1e-05
+    max_iters = [200, 300, 400]  # the more the merrier!
     for hidden_layer in hidden_layer_sizes:
         for activation_function in activation:
             for solver in solvers:
@@ -76,6 +75,8 @@ def results(X_train, X_test, Y_train, Y_test):
 
                         print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
+
+def lin_reg(X_train, X_test, Y_train, Y_test):
     # =============================================================================
     #  LinearRegression
     # =============================================================================
@@ -91,11 +92,13 @@ def results(X_train, X_test, Y_train, Y_test):
     mae = mean_absolute_error(Y_test, lr_pred, multioutput='uniform_average')
     mse = mean_squared_error(Y_test, lr_pred, squared=True)
     rmse = mean_squared_error(Y_test, lr_pred, squared=False)
-    r2s = r2_score(Y_test, mlp_pred)
-    v_s = explained_variance_score(Y_test, mlp_pred)
+    r2s = r2_score(Y_test, lr_pred)
+    v_s = explained_variance_score(Y_test, lr_pred)
 
     print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
+
+def dt_reg(X_train, X_test, Y_train, Y_test):
     # =============================================================================
     #  DecisionTreeRegressor
     # =============================================================================
@@ -133,12 +136,14 @@ def results(X_train, X_test, Y_train, Y_test):
                             mae = mean_absolute_error(Y_test, dTree_pred, multioutput='uniform_average')
                             mse = mean_squared_error(Y_test, dTree_pred, squared=True)
                             rmse = mean_squared_error(Y_test, dTree_pred, squared=False)
-                            r2s = r2_score(Y_test, mlp_pred)
-                            v_s = explained_variance_score(Y_test, mlp_pred)
+                            r2s = r2_score(Y_test, dTree_pred)
+                            v_s = explained_variance_score(Y_test, dTree_pred)
 
-                            print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ",
-                                  v_s)
+                            print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ",
+                                  r2s, "variance_score: ", v_s)
 
+
+def pls_reg(X_train, X_test, Y_train, Y_test):
     # =============================================================================
     #  PLSRegression
     # =============================================================================
@@ -164,35 +169,13 @@ def results(X_train, X_test, Y_train, Y_test):
             mae = mean_absolute_error(Y_test, pls_pred, multioutput='uniform_average')
             mse = mean_squared_error(Y_test, pls_pred, squared=True)
             rmse = mean_squared_error(Y_test, pls_pred, squared=False)
-            r2s = r2_score(Y_test, mlp_pred)
-            v_s = explained_variance_score(Y_test, mlp_pred)
+            r2s = r2_score(Y_test, pls_pred)
+            v_s = explained_variance_score(Y_test, pls_pred)
 
             print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
-    # =============================================================================
-    #  GaussianProcessRegressor
-    # =============================================================================
-    # gausian = GaussianProcessRegressor(kernel=None,
-    #                                    alpha=1e-10,
-    #                                    optimizer='fmin_l_bfgs_b',
-    #                                    n_restarts_optimizer=0,
-    #                                    normalize_y=False,
-    #                                    copy_X_train=True,
-    #                                    random_state=None)
-    #
-    # print("GaussianProcessRegressor...")
-    # gausian.fit(X_train, Y_train)
-    # gaus_pred = gausian.predict(X_test)
-    #
-    # mae = mean_absolute_error(Y_test, gaus_pred, multioutput='uniform_average')
-    # mse = mean_squared_error(Y_test, gaus_pred, squared=True)
-    # rmse = mean_squared_error(Y_test, gaus_pred, squared=False)
-    #
-    #
-    # print("MAE: ", mae)
-    # print("MSE: ", mse)
-    # print("RMSE: ", rmse)
 
+def knn_reg(X_train, X_test, Y_train, Y_test):
     # =============================================================================
     #  KNeighborsRegressor
     # =============================================================================
@@ -223,11 +206,13 @@ def results(X_train, X_test, Y_train, Y_test):
                         mae = mean_absolute_error(Y_test, knn_pred, multioutput='uniform_average')
                         mse = mean_squared_error(Y_test, knn_pred, squared=True)
                         rmse = mean_squared_error(Y_test, knn_pred, squared=False)
-                        r2s = r2_score(Y_test, mlp_pred)
-                        v_s = explained_variance_score(Y_test, mlp_pred)
+                        r2s = r2_score(Y_test, knn_pred)
+                        v_s = explained_variance_score(Y_test, knn_pred)
 
                         print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
+
+def sgd_reg(X_train, X_test, Y_train, Y_test):
     # =============================================================================
     #  SGDRegressor
     # =============================================================================
@@ -265,11 +250,13 @@ def results(X_train, X_test, Y_train, Y_test):
                 mae = mean_absolute_error(Y_test, sgd_pred, multioutput='uniform_average')
                 mse = mean_squared_error(Y_test, sgd_pred, squared=True)
                 rmse = mean_squared_error(Y_test, sgd_pred, squared=False)
-                r2s = r2_score(Y_test, mlp_pred)
-                v_s = explained_variance_score(Y_test, mlp_pred)
+                r2s = r2_score(Y_test, sgd_pred)
+                v_s = explained_variance_score(Y_test, sgd_pred)
 
                 print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
+
+def svr(X_train, X_test, Y_train, Y_test):
     # =============================================================================
     #  SVR
     # =============================================================================
@@ -301,11 +288,13 @@ def results(X_train, X_test, Y_train, Y_test):
                     mae = mean_absolute_error(Y_test, svr_pred, multioutput='uniform_average')
                     mse = mean_squared_error(Y_test, svr_pred, squared=True)
                     rmse = mean_squared_error(Y_test, svr_pred, squared=False)
-                    r2s = r2_score(Y_test, mlp_pred)
-                    v_s = explained_variance_score(Y_test, mlp_pred)
+                    r2s = r2_score(Y_test, svr_pred)
+                    v_s = explained_variance_score(Y_test, svr_pred)
 
                     print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
 
+
+def nu_svr(X_train, X_test, Y_train, Y_test):
     # =============================================================================
     #  NuSVR
     # =============================================================================
@@ -339,7 +328,21 @@ def results(X_train, X_test, Y_train, Y_test):
                         mae = mean_absolute_error(Y_test, nu_svr_pred, multioutput='uniform_average')
                         mse = mean_squared_error(Y_test, nu_svr_pred, squared=True)
                         rmse = mean_squared_error(Y_test, nu_svr_pred, squared=False)
-                        r2s = r2_score(Y_test, mlp_pred)
-                        v_s = explained_variance_score(Y_test, mlp_pred)
+                        r2s = r2_score(Y_test, nu_svr_pred)
+                        v_s = explained_variance_score(Y_test, nu_svr_pred)
 
                         print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
+
+
+def results(X_train, X_test, Y_train, Y_test):
+    # =============================================================================
+    #  Methods
+    # =============================================================================
+    mlp_reg(X_train, X_test, Y_train, Y_test)
+    lin_reg(X_train, X_test, Y_train, Y_test)
+    dt_reg(X_train, X_test, Y_train, Y_test)
+    pls_reg(X_train, X_test, Y_train, Y_test)
+    knn_reg(X_train, X_test, Y_train, Y_test)
+    sgd_reg(X_train, X_test, Y_train, Y_test)
+    svr(X_train, X_test, Y_train, Y_test)
+    nu_svr(X_train, X_test, Y_train, Y_test)

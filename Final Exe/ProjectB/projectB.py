@@ -7,6 +7,7 @@
 # =============================================================================
 #  Imports
 # =============================================================================
+#   import method for results!
 from classifiers import results
 #
 import numpy as np
@@ -24,6 +25,7 @@ from IPython.display import display
 import plotly.offline as py
 import plotly.graph_objs as go
 import plotly.tools as tls
+
 #
 py.init_notebook_mode(connected=True)
 #   feature selection
@@ -31,6 +33,7 @@ from sklearn.feature_selection import SelectKBest
 from matplotlib import pyplot
 from sklearn.feature_selection import f_regression
 import warnings
+
 #
 warnings.filterwarnings("ignore")
 # =============================================================================
@@ -42,6 +45,9 @@ dataset = pd.read_csv("Data/fuel_emissions.csv",
                       header=0,  # no header, alternative header = header_col
                       index_col=None  # no index, alternative header = index_row
                       )
+#   print everything from now on!
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
 #   check length of dataset
 # print(len(dataset))
 #   check dataset values
@@ -50,14 +56,12 @@ dataset = pd.read_csv("Data/fuel_emissions.csv",
 # print(dataset.info())
 #   describe
 # print(dataset.describe())
-#   print everything from now on!
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-
+#   check empty fields in all cols
+# print(dataset.isnull().sum())
 # =============================================================================
 #
 # =============================================================================
-#   Drop cols with na > round((len(dataset) / 3), 0)
+#   Drop cols with na > round((len(dataset) / 3), 0) -> Too many empty fields
 dataset = dataset.dropna(thresh=len(dataset) - (round((len(dataset) / 3), 0)), axis=1)
 #   Drop cols that offer no information
 drop_columns = ["file", "manufacturer", "model", "description"]
@@ -103,25 +107,27 @@ dataset["fuel_type_Diesel"] = np.where(dataset["fuel_type"].str.contains("Diesel
 # print(dataset['fuel_type_Diesel'].value_counts())
 #   Drop the original fuel_type col
 dataset = dataset.drop("fuel_type", axis=1)
-
-dataset["transmission_M6"] = np.where(dataset["transmission"].str.contains("M6"), 1, 0)
-dataset["transmission_M5"] = np.where(dataset["transmission"].str.contains("M5"), 1, 0)
-dataset["transmission_A6"] = np.where(dataset["transmission"].str.contains("A6"), 1, 0)
-dataset["transmission_A5"] = np.where(dataset["transmission"].str.contains("A5"), 1, 0)
-dataset["transmission_A7"] = np.where(dataset["transmission"].str.contains("A7"), 1, 0)
-dataset["transmission_A4"] = np.where(dataset["transmission"].str.contains("A4"), 1, 0)
-dataset["transmission_D6"] = np.where(dataset["transmission"].str.contains("D6"), 1, 0)
-dataset["transmission_CVT"] = np.where(dataset["transmission"].str.contains("CVT"), 1, 0)
-dataset["transmission_QM6"] = np.where(dataset["transmission"].str.contains("QM6"), 1, 0)
-dataset["transmission_A8"] = np.where(dataset["transmission"].str.contains("A8"), 1, 0)
-dataset["transmission_5MT"] = np.where(dataset["transmission"].str.contains("5MT"), 1, 0)
-dataset["transmission_6MT"] = np.where(dataset["transmission"].str.contains("6MT"), 1, 0)
-dataset["transmission_D7"] = np.where(dataset["transmission"].str.contains("D7"), 1, 0)
-dataset["transmission_QA6"] = np.where(dataset["transmission"].str.contains("QA6"), 1, 0)
-dataset["transmission_AV"] = np.where(dataset["transmission"].str.contains("AV"), 1, 0)
-dataset["transmission_6AT"] = np.where(dataset["transmission"].str.contains("6AT"), 1, 0)
-dataset["transmission_5AT"] = np.where(dataset["transmission"].str.contains("5AT"), 1, 0)
-dataset["transmission_QD7"] = np.where(dataset["transmission"].str.contains("QD7"), 1, 0)
+#   One-Hot-Encoding -> 74 unique values
+#   Choosing the first ones to create new columns with 0/1
+dataset["transmission_M6"] = np.where(dataset["transmission"].str.contains("M6"), 1, 0)    # M6            9720
+dataset["transmission_M5"] = np.where(dataset["transmission"].str.contains("M5"), 1, 0)    # M5            7535
+dataset["transmission_A6"] = np.where(dataset["transmission"].str.contains("A6"), 1, 0)    # A6            3221
+dataset["transmission_A5"] = np.where(dataset["transmission"].str.contains("A5"), 1, 0)    # A5            2582
+dataset["transmission_A7"] = np.where(dataset["transmission"].str.contains("A7"), 1, 0)    # A7            1693
+dataset["transmission_A4"] = np.where(dataset["transmission"].str.contains("A4"), 1, 0)    # A4            1322
+# maybe cutting point?
+dataset["transmission_D6"] = np.where(dataset["transmission"].str.contains("D6"), 1, 0)    # D6             731
+dataset["transmission_CVT"] = np.where(dataset["transmission"].str.contains("CVT"), 1, 0)  # CVT            666
+dataset["transmission_QM6"] = np.where(dataset["transmission"].str.contains("QM6"), 1, 0)  # QM6            624
+dataset["transmission_A8"] = np.where(dataset["transmission"].str.contains("A8"), 1, 0)    # A8             606
+dataset["transmission_5MT"] = np.where(dataset["transmission"].str.contains("5MT"), 1, 0)  # 5MT            555
+dataset["transmission_6MT"] = np.where(dataset["transmission"].str.contains("6MT"), 1, 0)  # 6MT            545
+dataset["transmission_D7"] = np.where(dataset["transmission"].str.contains("D7"), 1, 0)    # D7             449
+dataset["transmission_QA6"] = np.where(dataset["transmission"].str.contains("QA6"), 1, 0)  # QA6            372
+dataset["transmission_AV"] = np.where(dataset["transmission"].str.contains("AV"), 1, 0)    # AV             368
+dataset["transmission_6AT"] = np.where(dataset["transmission"].str.contains("6AT"), 1, 0)  # 6AT            203
+dataset["transmission_5AT"] = np.where(dataset["transmission"].str.contains("5AT"), 1, 0)  # 5AT            156
+dataset["transmission_QD7"] = np.where(dataset["transmission"].str.contains("QD7"), 1, 0)  # QD7            132
 #   Drop the original transmission col
 dataset = dataset.drop("transmission", axis=1)
 
@@ -140,8 +146,6 @@ y = dataset.iloc[:, -1:]
 # =============================================================================
 #   Split into Train & Test
 X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.20, random_state=11)
-
-
 # print(X_train.shape)
 # print(X_test.shape)
 # print(Y_train.shape)
@@ -221,4 +225,3 @@ def pca_method(train, test, Y_train, Y_test):
 results(X_train, X_test, Y_train, Y_test)
 #   Results with PCA
 pca_method(X_train, X_test)
-
