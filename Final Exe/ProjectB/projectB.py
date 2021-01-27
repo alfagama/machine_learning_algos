@@ -115,19 +115,19 @@ dataset["transmission_A6"] = np.where(dataset["transmission"].str.contains("A6")
 dataset["transmission_A5"] = np.where(dataset["transmission"].str.contains("A5"), 1, 0)    # A5            2582
 dataset["transmission_A7"] = np.where(dataset["transmission"].str.contains("A7"), 1, 0)    # A7            1693
 dataset["transmission_A4"] = np.where(dataset["transmission"].str.contains("A4"), 1, 0)    # A4            1322
-# maybe cutting point?
-dataset["transmission_D6"] = np.where(dataset["transmission"].str.contains("D6"), 1, 0)    # D6             731
-dataset["transmission_CVT"] = np.where(dataset["transmission"].str.contains("CVT"), 1, 0)  # CVT            666
-dataset["transmission_QM6"] = np.where(dataset["transmission"].str.contains("QM6"), 1, 0)  # QM6            624
-dataset["transmission_A8"] = np.where(dataset["transmission"].str.contains("A8"), 1, 0)    # A8             606
-dataset["transmission_5MT"] = np.where(dataset["transmission"].str.contains("5MT"), 1, 0)  # 5MT            555
-dataset["transmission_6MT"] = np.where(dataset["transmission"].str.contains("6MT"), 1, 0)  # 6MT            545
-dataset["transmission_D7"] = np.where(dataset["transmission"].str.contains("D7"), 1, 0)    # D7             449
-dataset["transmission_QA6"] = np.where(dataset["transmission"].str.contains("QA6"), 1, 0)  # QA6            372
-dataset["transmission_AV"] = np.where(dataset["transmission"].str.contains("AV"), 1, 0)    # AV             368
-dataset["transmission_6AT"] = np.where(dataset["transmission"].str.contains("6AT"), 1, 0)  # 6AT            203
-dataset["transmission_5AT"] = np.where(dataset["transmission"].str.contains("5AT"), 1, 0)  # 5AT            156
-dataset["transmission_QD7"] = np.where(dataset["transmission"].str.contains("QD7"), 1, 0)  # QD7            132
+# maybe cutting point? -> almost no difference in DT & Bagging
+# dataset["transmission_D6"] = np.where(dataset["transmission"].str.contains("D6"), 1, 0)    # D6             731
+# dataset["transmission_CVT"] = np.where(dataset["transmission"].str.contains("CVT"), 1, 0)  # CVT            666
+# dataset["transmission_QM6"] = np.where(dataset["transmission"].str.contains("QM6"), 1, 0)  # QM6            624
+# dataset["transmission_A8"] = np.where(dataset["transmission"].str.contains("A8"), 1, 0)    # A8             606
+# dataset["transmission_5MT"] = np.where(dataset["transmission"].str.contains("5MT"), 1, 0)  # 5MT            555
+# dataset["transmission_6MT"] = np.where(dataset["transmission"].str.contains("6MT"), 1, 0)  # 6MT            545
+# dataset["transmission_D7"] = np.where(dataset["transmission"].str.contains("D7"), 1, 0)    # D7             449
+# dataset["transmission_QA6"] = np.where(dataset["transmission"].str.contains("QA6"), 1, 0)  # QA6            372
+# dataset["transmission_AV"] = np.where(dataset["transmission"].str.contains("AV"), 1, 0)    # AV             368
+# dataset["transmission_6AT"] = np.where(dataset["transmission"].str.contains("6AT"), 1, 0)  # 6AT            203
+# dataset["transmission_5AT"] = np.where(dataset["transmission"].str.contains("5AT"), 1, 0)  # 5AT            156
+# dataset["transmission_QD7"] = np.where(dataset["transmission"].str.contains("QD7"), 1, 0)  # QD7            132
 #   Drop the original transmission col
 dataset = dataset.drop("transmission", axis=1)
 
@@ -223,4 +223,4 @@ def pca_method(train, test, y_train, y_test):
 #   Results without PCA
 results(X_train, X_test, Y_train, Y_test)
 #   Results with PCA
-pca_method(X_train, X_test, Y_train, Y_test)
+# pca_method(X_train, X_test, Y_train, Y_test)

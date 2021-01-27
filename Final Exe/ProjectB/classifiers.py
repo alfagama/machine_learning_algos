@@ -8,6 +8,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.linear_model import SGDRegressor
 from sklearn.svm import SVR, NuSVR
+from sklearn.ensemble import BaggingRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, explained_variance_score, r2_score
 
 
@@ -336,6 +337,49 @@ def nu_svr(X_train, X_test, Y_train, Y_test):
 
 
 # =============================================================================
+#  NuSVR
+# =============================================================================
+def bag_reg(X_train, X_test, Y_train, Y_test):
+    dTree = DecisionTreeRegressor(criterion='mse',
+                                  splitter='best',
+                                  max_depth=None,
+                                  min_samples_split=2,
+                                  min_samples_leaf=1,
+                                  min_weight_fraction_leaf=0.0,
+                                  max_features=None,
+                                  random_state=11,
+                                  max_leaf_nodes=None,
+                                  min_impurity_decrease=0.0,
+                                  min_impurity_split=None,
+                                  ccp_alpha=0.0)
+    n_estimators = [10, 100, 200, 500]
+    for n_est in n_estimators:
+        bag = BaggingRegressor(base_estimator=dTree,
+                               n_estimators=n_est,
+                               max_samples=1.0,
+                               max_features=1.0,
+                               bootstrap=True,
+                               bootstrap_features=False,
+                               oob_score=False,
+                               warm_start=True,
+                               n_jobs=None,
+                               random_state=11,
+                               verbose=0)
+
+        print("BaggingRegressor...", n_est)
+        bag.fit(X_train, Y_train)
+        bag_pred = bag.predict(X_test)
+
+        mae = mean_absolute_error(Y_test, bag_pred, multioutput='uniform_average')
+        mse = mean_squared_error(Y_test, bag_pred, squared=True)
+        rmse = mean_squared_error(Y_test, bag_pred, squared=False)
+        r2s = r2_score(Y_test, bag_pred)
+        v_s = explained_variance_score(Y_test, bag_pred)
+
+        print("MAE: ", mae, " MSE: ", mse, " RMSE: ", rmse, "r2_score: ", r2s, "variance_score: ", v_s)
+
+
+# =============================================================================
 #  Methods
 # =============================================================================
 def results(X_train, X_test, Y_train, Y_test):
@@ -347,3 +391,4 @@ def results(X_train, X_test, Y_train, Y_test):
     # sgd_reg(X_train, X_test, Y_train, Y_test)
     # svr(X_train, X_test, Y_train, Y_test)
     # nu_svr(X_train, X_test, Y_train, Y_test)
+    # bag_reg(X_train, X_test, Y_train, Y_test)
