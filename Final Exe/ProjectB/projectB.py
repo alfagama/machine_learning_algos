@@ -27,7 +27,8 @@ from sklearn.feature_selection import SelectKBest
 from matplotlib import pyplot
 from sklearn.feature_selection import f_regression
 
-from classifiers import *
+# from classifiers import results
+from models import results
 import warnings
 
 warnings.filterwarnings("ignore")
