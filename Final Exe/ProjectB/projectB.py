@@ -155,25 +155,25 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.20, random
 # =============================================================================
 #  Feature Selection
 # =============================================================================
-def select_features(X_train, y_train, X_test):
-    #   configure to select all features
-    fs = SelectKBest(score_func=f_regression, k='all')
-    #   learn relationship from training data
-    fs.fit(X_train, y_train)
-    #   transform train input data
-    X_train_fs = fs.transform(X_train)
-    #   transform test input data
-    X_test_fs = fs.transform(X_test)
-    return X_train_fs, X_test_fs, fs
-
-
-X_train_fs, X_test_fs, fs = select_features(X_train, Y_train, X_test)
-#  what are scores for the features
-for i in range(len(fs.scores_)):
-    print('Feature %d: %f' % (i, fs.scores_[i]))
-#  plot the scores
-pyplot.bar([i for i in range(len(fs.scores_))], fs.scores_)
-pyplot.show()
+# def select_features(X_train, y_train, X_test):
+#     #   configure to select all features
+#     fs = SelectKBest(score_func=f_regression, k='all')
+#     #   learn relationship from training data
+#     fs.fit(X_train, y_train)
+#     #   transform train input data
+#     X_train_fs = fs.transform(X_train)
+#     #   transform test input data
+#     X_test_fs = fs.transform(X_test)
+#     return X_train_fs, X_test_fs, fs
+#
+#
+# X_train_fs, X_test_fs, fs = select_features(X_train, Y_train, X_test)
+# #  what are scores for the features
+# for i in range(len(fs.scores_)):
+#     print('Feature %d: %f' % (i, fs.scores_[i]))
+# #  plot the scores
+# pyplot.bar([i for i in range(len(fs.scores_))], fs.scores_)
+# pyplot.show()
 
 # =============================================================================
 #  Drop columns based on Featrue Selection (..not good idea!)
@@ -192,13 +192,13 @@ scaler = StandardScaler()
 #   Transform -> X
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
-print(X[0])
+print(X_train[0])
 
 
 # =============================================================================
 #  PCA
 # =============================================================================
-def pca_method(train, test, Y_train, Y_test):
+def pca_method(train, test, y_train, y_test):
     n_comp = [5, 10, 15, 20]
     for comp in n_comp:
         pca = PCA(n_components=comp,
@@ -209,13 +209,12 @@ def pca_method(train, test, Y_train, Y_test):
                   iterated_power='auto',
                   random_state=None)
         #   fit train
-        pca.fit(train)
-        train_pca = pca.transform(train)
+        train_pca = pca.fit_transform(train)
         #   fit test
-        pca.fit(test)
         test_pca = pca.transform(test)
         #   results for
-        results(train_pca, test_pca, Y_train, Y_test)
+        print("---PCA-------------------", comp)
+        results(train_pca, test_pca, y_train, y_test)
 
 
 # =============================================================================
@@ -224,4 +223,4 @@ def pca_method(train, test, Y_train, Y_test):
 #   Results without PCA
 results(X_train, X_test, Y_train, Y_test)
 #   Results with PCA
-pca_method(X_train, X_test)
+pca_method(X_train, X_test, Y_train, Y_test)

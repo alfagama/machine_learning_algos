@@ -8,8 +8,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.linear_model import SGDRegressor
 from sklearn.svm import SVR, NuSVR
-from sklearn.metrics import mean_absolute_error, mean_squared_error, explained_variance_score, r2_score  # As noted
-# MAPE can be problematic. Most pointedly, it can cause division-by-zero errors.
+from sklearn.metrics import mean_absolute_error, mean_squared_error, explained_variance_score, r2_score
 
 
 # =============================================================================
@@ -18,7 +17,9 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, explained_v
 #   The concept here is:
 #   1.  Lists with model parameters
 #   2.  Run for all possible combination
-#   3.  Print results for MAE, MSE, RMSE, R2_Score, Variance_Score
+#   3.  Print results for: MAE, MSE, RMSE, R2_Score, Variance_Score # As noted MAPE
+#   #   can be problematic. Most pointedly, it can cause division-by-zero errors.
+#   #   In this case we dropped all y = 0, but still!..
 # =============================================================================
 
 def mlp_reg(X_train, X_test, Y_train, Y_test):
@@ -102,12 +103,12 @@ def dt_reg(X_train, X_test, Y_train, Y_test):
     # =============================================================================
     #  DecisionTreeRegressor
     # =============================================================================
-    criterions = ['mse', 'friedman_mse', 'mae']
+    criterions = ['mse', 'friedman_mse'] # mae->takes a lot more time and results worse than the others!
     splitters = ['best', 'random']
     max_depths = [None, 20, 50]
     min_sam_splits = [2, 5, 10]
-    min_leaf_sams = [1, 3, 5]
-    max_features = [None, 'log2', 'sqrt']
+    min_leaf_sams = [1, 3]  # -5 ->bad
+    max_features = [None]  # -'log2', -'sqrt' # way worse results with these
 
     for criterion in criterions:
         for splitter in splitters:
@@ -147,11 +148,11 @@ def pls_reg(X_train, X_test, Y_train, Y_test):
     # =============================================================================
     #  PLSRegression
     # =============================================================================
-    n_comps = [2, 5, 20]
+    n_comps = [2, 5, 20, 30]
     # algorithm = ['nipals', 'svd',
     #              'nipals', 'svd',
     #              'nipals', 'svd']
-    max_iters = [500, 1000]
+    max_iters = [500, 1000, 2000]
 
     for n_comp in n_comps:
         for max_iter in max_iters:
@@ -179,7 +180,7 @@ def knn_reg(X_train, X_test, Y_train, Y_test):
     # =============================================================================
     #  KNeighborsRegressor
     # =============================================================================
-    neighbours = [5, 20, 100]
+    neighbours = [3]
     weights = ['uniform', 'distance']
     algorithms = ['auto', 'ball_tree', 'kd_tree', 'brute']
     leaf_sizes = [20, 30, 40, 50]
@@ -233,7 +234,7 @@ def sgd_reg(X_train, X_test, Y_train, Y_test):
                                    shuffle=True,
                                    verbose=0,
                                    epsilon=0.1,
-                                   random_state=None,
+                                   random_state=11,
                                    learning_rate='invscaling',
                                    eta0=0.01,
                                    power_t=0.25,
