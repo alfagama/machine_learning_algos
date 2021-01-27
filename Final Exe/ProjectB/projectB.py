@@ -223,4 +223,4 @@ def pca_method(train, test, y_train, y_test):
 #   Results without PCA
 results(X_train, X_test, Y_train, Y_test)
 #   Results with PCA
-# pca_method(X_train, X_test, Y_train, Y_test)
+pca_method(X_train, X_test, Y_train, Y_test)

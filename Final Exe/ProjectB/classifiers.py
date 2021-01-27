@@ -383,12 +383,12 @@ def bag_reg(X_train, X_test, Y_train, Y_test):
 #  Methods
 # =============================================================================
 def results(X_train, X_test, Y_train, Y_test):
-    # mlp_reg(X_train, X_test, Y_train, Y_test)
-    # lin_reg(X_train, X_test, Y_train, Y_test)
+    mlp_reg(X_train, X_test, Y_train, Y_test)
+    lin_reg(X_train, X_test, Y_train, Y_test)
     dt_reg(X_train, X_test, Y_train, Y_test)
-    # pls_reg(X_train, X_test, Y_train, Y_test)
-    # knn_reg(X_train, X_test, Y_train, Y_test)
-    # sgd_reg(X_train, X_test, Y_train, Y_test)
-    # svr(X_train, X_test, Y_train, Y_test)
-    # nu_svr(X_train, X_test, Y_train, Y_test)
-    # bag_reg(X_train, X_test, Y_train, Y_test)
+    pls_reg(X_train, X_test, Y_train, Y_test)
+    knn_reg(X_train, X_test, Y_train, Y_test)
+    sgd_reg(X_train, X_test, Y_train, Y_test)
+    svr(X_train, X_test, Y_train, Y_test)
+    nu_svr(X_train, X_test, Y_train, Y_test)
+    bag_reg(X_train, X_test, Y_train, Y_test)
