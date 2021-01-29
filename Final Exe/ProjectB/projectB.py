@@ -9,24 +9,18 @@
 # =============================================================================
 #   import method for results!
 from classifiers import results
-#
 import numpy as np
 import pandas as pd
-#
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-#
 import matplotlib.pyplot as plt
 import seaborn as sns
 from IPython.display import display
-#
 import plotly.offline as py
 import plotly.graph_objs as go
 import plotly.tools as tls
-
-#
 py.init_notebook_mode(connected=True)
 #   feature selection
 from sklearn.feature_selection import SelectKBest
@@ -200,21 +194,23 @@ print(X_train[0])
 # =============================================================================
 def pca_method(train, test, y_train, y_test):
     n_comp = [5, 10, 15, 20]
-    for comp in n_comp:
-        pca = PCA(n_components=comp,
-                  copy=True,
-                  whiten=False,
-                  svd_solver='auto',
-                  tol=0.0,
-                  iterated_power='auto',
-                  random_state=None)
-        #   fit train
-        train_pca = pca.fit_transform(train)
-        #   fit test
-        test_pca = pca.transform(test)
-        #   results for
-        print("---PCA-------------------", comp)
-        results(train_pca, test_pca, y_train, y_test)
+    svd_solvers = ['full', 'arpack', 'randomized', 'auto']
+    for solver in svd_solvers:
+        for comp in n_comp:
+            pca = PCA(n_components=comp,
+                      copy=True,
+                      whiten=False,
+                      svd_solver=solver,
+                      tol=0.0,
+                      iterated_power='auto',
+                      random_state=None)
+            #   fit train
+            train_pca = pca.fit_transform(train)
+            #   fit test
+            test_pca = pca.transform(test)
+            #   results for
+            print("---PCA-------------------", solver, comp)
+            results(train_pca, test_pca, y_train, y_test)
 
 
 # =============================================================================
@@ -223,4 +219,4 @@ def pca_method(train, test, y_train, y_test):
 #   Results without PCA
 results(X_train, X_test, Y_train, Y_test)
 #   Results with PCA
-pca_method(X_train, X_test, Y_train, Y_test)
+# pca_method(X_train, X_test, Y_train, Y_test)

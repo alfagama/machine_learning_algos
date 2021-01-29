@@ -8,6 +8,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.linear_model import SGDRegressor
 from sklearn.svm import SVR, NuSVR
+from sklearn.isotonic import IsotonicRegression
 from sklearn.ensemble import BaggingRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, explained_variance_score, r2_score
 
@@ -161,7 +162,7 @@ def pls_reg(X_train, X_test, Y_train, Y_test):
                                     # algorithm=algorithm[i],
                                     scale=True,
                                     max_iter=max_iter,
-                                    tol=1e-06,
+                                    tol=0.000001,
                                     copy=True)
 
             print("PLSRegression...", n_comp, max_iter)
@@ -231,7 +232,7 @@ def sgd_reg(X_train, X_test, Y_train, Y_test):
                                    l1_ratio=0.15,
                                    fit_intercept=True,
                                    max_iter=max_iter,
-                                   tol=0.001,
+                                   tol=0.000001,
                                    shuffle=True,
                                    verbose=0,
                                    epsilon=0.1,
@@ -275,7 +276,7 @@ def svr(X_train, X_test, Y_train, Y_test):
                               degree=degree,
                               gamma=gamma,
                               coef0=0.0,
-                              tol=0.001,
+                              tol=0.000001,
                               C=c_val,
                               epsilon=0.1,
                               shrinking=True,
@@ -318,7 +319,7 @@ def nu_svr(X_train, X_test, Y_train, Y_test):
                                        gamma=nu_gamma,
                                        coef0=0.0,
                                        shrinking=True,
-                                       tol=0.001,
+                                       tol=0.000001,
                                        cache_size=200,
                                        verbose=False,
                                        max_iter=- 1)
@@ -337,7 +338,7 @@ def nu_svr(X_train, X_test, Y_train, Y_test):
 
 
 # =============================================================================
-#  NuSVR
+#  BaggingRegressor
 # =============================================================================
 def bag_reg(X_train, X_test, Y_train, Y_test):
     dTree = DecisionTreeRegressor(criterion='mse',
@@ -383,12 +384,12 @@ def bag_reg(X_train, X_test, Y_train, Y_test):
 #  Methods
 # =============================================================================
 def results(X_train, X_test, Y_train, Y_test):
-    mlp_reg(X_train, X_test, Y_train, Y_test)
-    lin_reg(X_train, X_test, Y_train, Y_test)
-    dt_reg(X_train, X_test, Y_train, Y_test)
-    pls_reg(X_train, X_test, Y_train, Y_test)
-    knn_reg(X_train, X_test, Y_train, Y_test)
-    sgd_reg(X_train, X_test, Y_train, Y_test)
-    svr(X_train, X_test, Y_train, Y_test)
+    # mlp_reg(X_train, X_test, Y_train, Y_test)
+    # lin_reg(X_train, X_test, Y_train, Y_test)
+    # dt_reg(X_train, X_test, Y_train, Y_test)
+    # pls_reg(X_train, X_test, Y_train, Y_test)
+    # knn_reg(X_train, X_test, Y_train, Y_test)
+    # sgd_reg(X_train, X_test, Y_train, Y_test)
+    # svr(X_train, X_test, Y_train, Y_test)
     nu_svr(X_train, X_test, Y_train, Y_test)
-    bag_reg(X_train, X_test, Y_train, Y_test)
+    # bag_reg(X_train, X_test, Y_train, Y_test)
