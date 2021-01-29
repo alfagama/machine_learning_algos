@@ -7,8 +7,13 @@ import numpy as np
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import shuffle
+from sklearn.decomposition import PCA
 from clustering import results
+from silhuette import silhuette_score
+import warnings
 
+#
+warnings.filterwarnings("ignore")
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
@@ -217,25 +222,27 @@ scaler = StandardScaler()
 #   Transform -> X
 train_set = scaler.fit_transform(train_set)
 test_set = scaler.transform(test_set)
-print(train_set[0])
-# from sklearn.decomposition import PCA
-# # n_cmps = [3,5,7,9,11,15,18,20,23,25,30]
-# # for n_comp in n_cmps:
-# pca = PCA(n_components=3,
-#           copy=True,
-#           whiten=False,
-#           svd_solver='arpack',
-#           tol=1e-06,
-#           iterated_power='auto',
-#           random_state=11)
-# #   fit train
-# train_set = pca.fit_transform(train_set)
-# #   fit test
-# test_set = pca.transform(test_set)
-print(train_set[0])
-
-
+# print(train_set[0])
 
 results(train_set, test_set, target)
+
+silhuette_score(train_set, test_set, target) # call this after each model or sth
+
+for n_comp in range(1, 40):
+    pca = PCA(n_components=n_comp,
+              copy=True,
+              whiten=False,
+              svd_solver='auto',
+              tol=1e-06,
+              iterated_power='auto',
+              random_state=11)
+    #   fit train
+    train_set_pca = pca.fit_transform(train_set)
+    #   fit test
+    test_set_pca = pca.transform(test_set)
+    # print(train_set[0])
+    print("PCA-------", n_comp)
+    results(train_set_pca, test_set_pca, target)
+
 
 
