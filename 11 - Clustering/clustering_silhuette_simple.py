@@ -21,6 +21,9 @@ for n_cluster in range_n_clusters:
     # Fit the KMeans model
     km.fit_predict(X)
     # Calculate Silhoutte Score
+    print("aaaaaa")
+    print(X)
+    print(km.labels_)
     score = silhouette_score(X, km.labels_, metric='euclidean')
     # Print the score
     print('Silhouetter Score of K-Means for ', n_cluster, 'number of clusters: %.6f' % score)

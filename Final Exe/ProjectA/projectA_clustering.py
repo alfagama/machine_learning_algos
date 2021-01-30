@@ -117,23 +117,19 @@ def agglomerative(train_set, test_set, target):
 #  Birch
 # =============================================================================
 def birch(train_set, test_set, target):
-    thresholds = [0.3, 0.5, 0.7, 0.9]
-    branching_factors = [50]  # [10, 30, 50, 70, 90]
-    for threshold in thresholds:
-        for branching_factor in branching_factors:
-            birch = Birch(threshold=threshold,
-                          branching_factor=branching_factor,
-                          n_clusters=2,
-                          compute_labels=False,
-                          copy=False)
-            print("Birch..", threshold, branching_factor)
-            birch.fit(train_set)
-            birch_pred = birch.predict(test_set)
-            print(birch_pred)  # -> ola 1
-            print("ACC: ", metrics.accuracy_score(target, birch_pred),
-                  "PRE: ", metrics.precision_score(target, birch_pred, average="macro"),
-                  "REC: ", metrics.recall_score(target, birch_pred, average="macro"),
-                  "F1: ", metrics.f1_score(target, birch_pred, average="macro"))
+    birch = Birch(threshold=1.0,
+                  branching_factor=150,
+                  # compute_labels=False,
+                  # copy=False,
+                  n_clusters=2)
+    print("Birch..")
+    birch.fit(train_set)
+    birch_pred = birch.predict(test_set)
+    print(birch_pred)  # -> ola 1
+    print("ACC: ", metrics.accuracy_score(target, birch_pred),
+          "PRE: ", metrics.precision_score(target, birch_pred, average="macro"),
+          "REC: ", metrics.recall_score(target, birch_pred, average="macro"),
+          "F1: ", metrics.f1_score(target, birch_pred, average="macro"))
 
 
 # =============================================================================

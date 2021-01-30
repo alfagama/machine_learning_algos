@@ -8,47 +8,47 @@ from sklearn.preprocessing import OrdinalEncoder
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import shuffle
 from sklearn.decomposition import PCA
-from clustering import results
-from silhuette import silhuette_score
+from projectA_clustering import results
+from projectA_silhuette import silhuette_score
 import warnings
 
 #
 warnings.filterwarnings("ignore")
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
-
+# =============================================================================
+#  Read the dataset
+# =============================================================================
+#   -----reading train_set with header -> column 1 in excel
 train_set = pd.read_csv("Data/NSL-KDDTrain.csv",
                         sep=',',
                         header=0,  # no header, alternative header = header_col
                         index_col=None,  # no index, alternative header = index_row
-                        # skiprows=0  # how many rows to skip / not include in read_csv
                         )
-#   check length of dataset
+#   -----check length of dataset
 print(len(train_set))  # 125973
-#   check dataset values
+#   -----check dataset values
 # print(train_set.head(5))
-
+#   -----reading test_set with header -> column 1 in excel
 test_set = pd.read_csv("Data/NSL-KDDTest.csv",
                        sep=',',
                        header=0,  # no header, alternative header = header_col
                        index_col=None,  # no index, alternative header = index_row
-                       # skiprows=0  # how many rows to skip / not include in read_csv
                        )
-#   check length of dataset
+#   -----check length of dataset
 print(len(test_set))  # 22544
-#   check dataset values
+#   -----check dataset values
 # print(test_set.head(5))
-
-#   see info
+#   -----see info
 # print(train_set.info())  # dtypes: float64(15), int64(23), object(3)
 # print(test_set.info())  # dtypes: float64(15), int64(23), object(4)
-#   describe
+#   -----describe
 # print(train_set.describe())
 # print(test_set.describe())
-#   check empty fields in all cols
+#   -----check empty fields in all cols
 # print(train_set.isnull().sum())  # no null
 # print(test_set.isnull().sum())  # no null
-
+#   -----see values in categorical columns to see how to handle them
 # print(train_set['protocol_type'].value_counts())  # 3
 # tcp     102689
 # udp      14993
@@ -226,8 +226,7 @@ test_set = scaler.transform(test_set)
 
 results(train_set, test_set, target)
 
-silhuette_score(train_set, test_set, target) # call this after each model or sth
-
+#
 for n_comp in range(1, 40):
     pca = PCA(n_components=n_comp,
               copy=True,
@@ -244,5 +243,4 @@ for n_comp in range(1, 40):
     print("PCA-------", n_comp)
     results(train_set_pca, test_set_pca, target)
 
-
-
+silhuette_score(train_set, test_set, target) # call this after each model or sth
