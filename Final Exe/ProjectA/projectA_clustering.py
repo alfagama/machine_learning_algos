@@ -152,5 +152,5 @@ def birch(train_set, test_set, target):
 def results(train_set, test_set, target):
     kmeans(train_set, test_set, target)
     minibatchkmeans(train_set, test_set, target)
-    agglomerative(train_set, test_set, target)
-    birch(train_set, test_set, target)
+    # agglomerative(train_set, test_set, target)
+    # birch(train_set, test_set, target)

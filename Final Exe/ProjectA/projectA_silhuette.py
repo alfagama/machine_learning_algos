@@ -1,8 +1,14 @@
+# =============================================================================
+#  Imports
+# =============================================================================
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from yellowbrick.cluster import SilhouetteVisualizer
 import matplotlib.pyplot as plt
 
+# =============================================================================
+#  Silhuette Score
+# =============================================================================
 def silhuette_score(X):
     fig, ax = plt.subplots(2, 2, figsize=(15,8))
     range_n_clusters = [2, 3, 4, 5]

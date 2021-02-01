@@ -276,7 +276,7 @@ results(train_set, test_set, target)
 # =============================================================================
 #  PCA
 # =============================================================================
-def pca(train_set, test_set, target, comp_num):
+def pca(train_set, test_set, comp_num):
     # -----This was with a for loop, but now I know best n_components needed
     pca = PCA(n_components=comp_num,
               copy=True,
@@ -290,18 +290,18 @@ def pca(train_set, test_set, target, comp_num):
     #   fit test
     test_set_pca = pca.transform(test_set)
     #   return
-    return train_set_pca, test_set_pca, target
+    return train_set_pca, test_set_pca
 
 
 # =============================================================================
 #  Results 3 - With PCA
 # =============================================================================
 print("-----Results with PCA:...")
-train_after_pca, test_after_pca, target_after_pca = pca(train_set, test_set, target, 5)
-kmeans(train_after_pca, test_after_pca, target_after_pca)
-train_after_pca, test_after_pca, target_after_pca = pca(train_set, test_set, target, 24)
-minibatchkmeans(train_after_pca, test_after_pca, target_after_pca)
-train_after_pca, test_after_pca, target_after_pca = pca(train_set, test_set, target, 1)
-agglomerative(train_after_pca, test_after_pca, target_after_pca)
-train_after_pca, test_after_pca, target_after_pca = pca(train_set, test_set, target, 1)
-birch(train_after_pca, test_after_pca, target_after_pca)
+train_after_pca, test_after_pca = pca(train_set, test_set, 5)
+kmeans(train_after_pca, test_after_pca, target)
+train_after_pca, test_after_pca = pca(train_set, test_set, 24)
+minibatchkmeans(train_after_pca, test_after_pca, target)
+train_after_pca, test_after_pca = pca(train_set, test_set, 1)
+agglomerative(train_after_pca, test_after_pca, target)
+train_after_pca, test_after_pca = pca(train_set, test_set, 1)
+birch(train_after_pca, test_after_pca, target)
