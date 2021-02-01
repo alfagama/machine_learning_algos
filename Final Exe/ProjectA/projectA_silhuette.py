@@ -3,9 +3,7 @@ from sklearn.metrics import silhouette_score
 from yellowbrick.cluster import SilhouetteVisualizer
 import matplotlib.pyplot as plt
 
-def silhuette_score(train_set, test_set, target):
-    X = test_set
-
+def silhuette_score(X):
     fig, ax = plt.subplots(2, 2, figsize=(15,8))
     range_n_clusters = [2, 3, 4, 5]
     for n_cluster in range_n_clusters:
@@ -37,6 +35,3 @@ def silhuette_score(train_set, test_set, target):
         '''
         visualizer = SilhouetteVisualizer(km, colors='yellowbrick', ax=ax[q-1][mod])
         visualizer.fit(X)
-
-    plt.savefig('silhuette.png')
-    plt.show()

@@ -207,7 +207,7 @@ results(X_train, X_test, Y_train, Y_test)
 # =============================================================================
 #  Scale
 # =============================================================================
-#   -----Tried MinMaxScaler -> worse results than StandardScaler
+#   -----MinMaxScaler()
 scaler = MinMaxScaler(copy=True, feature_range=(0, 1))
 #   -----StandardScaler()
 # scaler = StandardScaler()
