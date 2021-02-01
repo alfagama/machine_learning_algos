@@ -148,11 +148,11 @@ def pls_reg(X_train, X_test, Y_train, Y_test):
 def knn_reg(X_train, X_test, Y_train, Y_test):
     print("KNeighborsRegressor...")
     parameters = {
-        'n_neighbors': [1, 2, 3, 4, 5, 10, 20, 30],
+        'n_neighbors': [1, 3, 5],
         'weights': ['uniform', 'distance'],
-        'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute'],
-        'leaf_size': [20, 30, 40, 50],
-        'p': [1, 2, 3, 4],
+        'algorithm': ['auto'],
+        'leaf_size': [20, 30],
+        'p': [1, 2],
         'metric': ['minkowski'],
         'metric_params': [None],
         'n_jobs': [None],
@@ -183,7 +183,7 @@ def sgd_reg(X_train, X_test, Y_train, Y_test):
         'fit_intercept': [True],
         'max_iter': [1000, 2000],
         'tol': [0.000001],
-        'shuffle': [None],
+        'shuffle': [False],
         'verbose': [0],
         'epsilon': [0.1],
         'random_state': [11],
@@ -192,7 +192,7 @@ def sgd_reg(X_train, X_test, Y_train, Y_test):
         'power_t': [0.25],
         'early_stopping': [False],
         'validation_fraction': [0.25],
-        'n_iter_no_change': [0.1],
+        'n_iter_no_change': [1],
         'warm_start': [False],
         'average': [False]
     }

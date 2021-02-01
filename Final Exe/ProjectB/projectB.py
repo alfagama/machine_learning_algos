@@ -2,32 +2,21 @@
 #   https://drive.google.com/drive/folders/1d5NCf33sX4ikTtyG0H8A4I18V-mGIdWm
 #   Dataset Info:
 #
-# $ pipenv shell
-# $ jupyter notebook
 # =============================================================================
 #  Imports
 # =============================================================================
-#   import method for results!
 from projectB_classifiers import results
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
-import seaborn as sns
-from IPython.display import display
 import plotly.offline as py
-import plotly.graph_objs as go
-import plotly.tools as tls
 py.init_notebook_mode(connected=True)
-#   feature selection
 from sklearn.feature_selection import SelectKBest
 from matplotlib import pyplot
 from sklearn.feature_selection import f_regression
 import warnings
-
 #
 warnings.filterwarnings("ignore")
 # =============================================================================
@@ -79,18 +68,18 @@ dataset["transmission"] = dataset["transmission"].fillna(list(dict(transmission_
 #   -----Fill the remaining int/float fields in each col with .mean()
 dataset = dataset.fillna(dataset.mean())
 #   -----Different ideas to handle 'transmission_type' col
-#   -----1. Replace in col transmission_type. Manual -> 1, Automatic -> 0 (since it's binary there is no problem)
 pd.get_dummies(dataset, columns=['transmission_type']).head()
+#   -----1. Replace in col transmission_type. Manual -> 1, Automatic -> 0 (since it's binary there is no problem)
 # print(dataset['transmission_type'].value_counts())
 types = {"transmission_type": {"Manual": 1, "Automatic": 0}}
 dataset = dataset.replace(types)
 #   -----2. Replace in col transmission_type. Manual -> 1, Automatic -> 0 (since it's binary there is no problem)
-# types = {"transmission_type": {"Manual": 0, "Automatic": 1}}
+# types = {"transmission_type": {"Manual": 1, "Automatic": 0}}
 # dataset = dataset.replace(types)
 #   -----3. One-Hot-Encoding -> column 'transmission_type' -> 2 unique values
 # dataset["transmission_type_M"] = np.where(dataset["transmission_type"].str.contains("Manual"), 1, 0)
 # dataset["transmission_type_A"] = np.where(dataset["transmission_type"].str.contains("Automatic"), 1, 0)
-# dataset = dataset.drop("transmission_type", axis=1)
+dataset = dataset.drop("transmission_type", axis=1)
 #   -----Drop cols that offer no information
 # drop_columns = ["file", "manufacturer", "model", "description"]
 drop_columns = ["file", "model", "description"]
@@ -144,16 +133,16 @@ dataset["transmission_A4"] = np.where(dataset["transmission"].str.contains("A4")
 dataset = dataset.drop("transmission", axis=1)
 #   -----One-Hot-Encoding -> column 'manufacturer' -> 60 unique values
 #   -----Choosing the first ones to create new columns with 0/1
-dataset["transmission_Mercedes"] = np.where(dataset["manufacturer"].str.contains("Mercedes-Benz"), 1, 0)    # 4502
-dataset["transmission_Vauxhall"] = np.where(dataset["manufacturer"].str.contains("Vauxhall"), 1, 0)         # 3144
-dataset["transmission_Volkswagen"] = np.where(dataset["manufacturer"].str.contains("Volkswagen"), 1, 0)     # 2711
-dataset["transmission_BMW"] = np.where(dataset["manufacturer"].str.contains("BMW"), 1, 0)                   # 2403
-dataset["transmission_Audi"] = np.where(dataset["manufacturer"].str.contains("Audi"), 1, 0)                 # 2166
-dataset["transmission_Ford"] = np.where(dataset["manufacturer"].str.contains("Ford"), 1, 0)                 # 2054
-dataset["transmission_Renault"] = np.where(dataset["manufacturer"].str.contains("Renault"), 1, 0)           # 1243
-dataset["transmission_Peugeot"] = np.where(dataset["manufacturer"].str.contains("Peugeot"), 1, 0)           # 1225
-dataset["transmission_Volvo"] = np.where(dataset["manufacturer"].str.contains("Volvo"), 1, 0)               # 1170
-dataset["transmission_Skoda"] = np.where(dataset["manufacturer"].str.contains("Skoda"), 1, 0)               # 1029
+# dataset["transmission_Mercedes"] = np.where(dataset["manufacturer"].str.contains("Mercedes-Benz"), 1, 0)    # 4502
+# dataset["transmission_Vauxhall"] = np.where(dataset["manufacturer"].str.contains("Vauxhall"), 1, 0)         # 3144
+# dataset["transmission_Volkswagen"] = np.where(dataset["manufacturer"].str.contains("Volkswagen"), 1, 0)     # 2711
+# dataset["transmission_BMW"] = np.where(dataset["manufacturer"].str.contains("BMW"), 1, 0)                   # 2403
+# dataset["transmission_Audi"] = np.where(dataset["manufacturer"].str.contains("Audi"), 1, 0)                 # 2166
+# dataset["transmission_Ford"] = np.where(dataset["manufacturer"].str.contains("Ford"), 1, 0)                 # 2054
+# dataset["transmission_Renault"] = np.where(dataset["manufacturer"].str.contains("Renault"), 1, 0)           # 1243
+# dataset["transmission_Peugeot"] = np.where(dataset["manufacturer"].str.contains("Peugeot"), 1, 0)           # 1225
+# dataset["transmission_Volvo"] = np.where(dataset["manufacturer"].str.contains("Volvo"), 1, 0)               # 1170
+# dataset["transmission_Skoda"] = np.where(dataset["manufacturer"].str.contains("Skoda"), 1, 0)               # 1029
 #   -----Drop the original manufacturer col
 dataset = dataset.drop("manufacturer", axis=1)
 
@@ -162,7 +151,7 @@ dataset = dataset.drop("manufacturer", axis=1)
 # =============================================================================
 #   -----Move col fuel_cost_12000_miles to the end
 dataset = dataset[[col for col in dataset.columns if col != 'fuel_cost_12000_miles'] + ['fuel_cost_12000_miles']]
-# print(dataset.head(5))
+# print(dataset.info())
 #   -----Split into X and Y
 X = dataset.iloc[:, :-1]
 y = dataset.iloc[:, -1:]
@@ -181,25 +170,25 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.20, random
 # =============================================================================
 #  Feature Selection
 # =============================================================================
-# def select_features(X_train, y_train, X_test):
-#     #   configure to select all features
-#     fs = SelectKBest(score_func=f_regression, k='all')
-#     #   learn relationship from training data
-#     fs.fit(X_train, y_train)
-#     #   transform train input data
-#     X_train_fs = fs.transform(X_train)
-#     #   transform test input data
-#     X_test_fs = fs.transform(X_test)
-#     return X_train_fs, X_test_fs, fs
-#
-#
-# X_train_fs, X_test_fs, fs = select_features(X_train, Y_train, X_test)
-# #  -----what are scores for the features
-# for i in range(len(fs.scores_)):
-#     print('Feature %d: %f' % (i, fs.scores_[i]))
-# #  -----plot the scores
-# pyplot.bar([i for i in range(len(fs.scores_))], fs.scores_)
-# pyplot.show()
+def select_features(X_train, y_train, X_test):
+    #   configure to select all features
+    fs = SelectKBest(score_func=f_regression, k='all')
+    #   learn relationship from training data
+    fs.fit(X_train, y_train)
+    #   transform train input data
+    X_train_fs = fs.transform(X_train)
+    #   transform test input data
+    X_test_fs = fs.transform(X_test)
+    return X_train_fs, X_test_fs, fs
+
+
+X_train_fs, X_test_fs, fs = select_features(X_train, Y_train, X_test)
+#  -----what are scores for the features
+for i in range(len(fs.scores_)):
+    print('Feature %d: %f' % (i, fs.scores_[i]))
+#  -----plot the scores
+pyplot.bar([i for i in range(len(fs.scores_))], fs.scores_)
+pyplot.show()
 
 # =============================================================================
 #  Drop columns based on Featrue Selection (..not good idea!)
@@ -212,15 +201,16 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.20, random
 #  Results 1 - without scaling!
 # =============================================================================
 #   -----Results without scaling!
+print("Results without scaling:...")
 results(X_train, X_test, Y_train, Y_test)
 
 # =============================================================================
 #  Scale
 # =============================================================================
 #   -----Tried MinMaxScaler -> worse results than StandardScaler
-# scaler = MinMaxScaler(copy=True, feature_range=(0, 1))
+scaler = MinMaxScaler(copy=True, feature_range=(0, 1))
 #   -----StandardScaler()
-scaler = StandardScaler()
+# scaler = StandardScaler()
 #   -----Transform -> X
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
@@ -231,29 +221,28 @@ X_test = scaler.transform(X_test)
 # =============================================================================
 #   -----Results without PCA, with scaling
 # print(X_train)
+print("Results after scaling:...")
 results(X_train, X_test, Y_train, Y_test)
 
 # =============================================================================
 #  PCA
 # =============================================================================
 def pca_method(train, test, y_train, y_test):
-    svd_solvers = ['full', 'arpack', 'randomized', 'auto']
-    for solver in svd_solvers:
-        for comp in range(1, 30):
-            pca = PCA(n_components=comp,
-                      copy=True,
-                      whiten=False,
-                      svd_solver=solver,
-                      tol=0.0,
-                      iterated_power='auto',
-                      random_state=None)
-            #   -----fit train
-            train_pca = pca.fit_transform(train)
-            #   -----fit test
-            test_pca = pca.transform(test)
-            #   -----results for
-            print("---PCA-------------------", solver, comp)
-            results(train_pca, test_pca, y_train, y_test)
+    for comp in range(1, 20):
+        pca = PCA(n_components=comp,
+                  copy=True,
+                  whiten=False,
+                  svd_solver='auto',  # ['full', 'arpack', 'randomized', 'auto'] -> no difference
+                  tol=0.0,
+                  iterated_power='auto',
+                  random_state=None)
+        #   -----fit train
+        train_pca = pca.fit_transform(train)
+        #   -----fit test
+        test_pca = pca.transform(test)
+        #   -----results for
+        print("---PCA-------------------", comp)
+        results(train_pca, test_pca, y_train, y_test)
 
 
 # =============================================================================
