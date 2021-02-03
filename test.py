@@ -24,7 +24,7 @@ import sklearn
 print('sklearn: {}'.format(sklearn.__version__))
 
 import keras
-print(keras.__version__)
+print('keras: ', keras.__version__)
 
 import tensorflow
-print(tensorflow.__version__)
+print('tensorflow: ', tensorflow.__version__)
